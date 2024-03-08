@@ -1,8 +1,8 @@
 {
-    "announce": true,
+    "announce": false,
     "artwork": {
         "cdn": "",
-        "enable": true,
+        "enable": false,
         "models_path": "models",
         "port": 7777,
         "web_server_bind": ""
@@ -13,7 +13,7 @@
     },
     "chat_input_filter": true,
     "discord": {
-        "invite": ""
+        "invite": "https://discord.gg/WwZDXWQfNE"
     },
     "enable_query": true,
     "exclude": [
@@ -23,32 +23,32 @@
         "allow_interior_weapons": true,
         "chat_radius": 200.0,
         "death_drop_amount": 0,
-        "gravity": 0.008,
+        "gravity": 0.010,
         "group_player_objects": false,
         "lag_compensation_mode": 1,
-        "map": "",
-        "mode": "",
-        "nametag_draw_radius": 70.0,
-        "player_marker_draw_radius": 250.0,
+        "map": "Santorini",
+        "mode": "Freestyle",
+        "nametag_draw_radius": 100.0,
+        "player_marker_draw_radius": 300.0,
         "player_marker_mode": 1,
         "time": 12,
         "use_all_animations": true,
         "use_chat_radius": false,
         "use_entry_exit_markers": true,
         "use_instagib": false,
-        "use_manual_engine_and_lights": false,
+        "use_manual_engine_and_lights": true,
         "use_nametag_los": true,
         "use_nametags": true,
         "use_player_marker_draw_radius": false,
-        "use_player_ped_anims": false,
+        "use_player_ped_anims": true,
         "use_stunt_bonuses": true,
-        "use_vehicle_friendly_fire": false,
-        "use_zone_names": false,
+        "use_vehicle_friendly_fire": true,
+        "use_zone_names": true,
         "validate_animations": true,
         "vehicle_respawn_time": 10000,
         "weather": 10
     },
-    "language": "",
+    "language": "English",
     "logging": {
         "enable": true,
         "file": "log.txt",
@@ -65,7 +65,7 @@
     },
     "max_bots": 0,
     "max_players": 50,
-    "name": "open.mp server",
+    "name": "Santorini Freestyle",
     "network": {
         "acks_limit": 3000,
         "aiming_sync_rate": 30,
@@ -84,7 +84,7 @@
         "on_foot_sync_rate": 30,
         "player_marker_sync_rate": 2500,
         "player_timeout": 10000,
-        "port": 7777,
+        "port": 7780,
         "public_addr": "",
         "stream_radius": 200.0,
         "stream_rate": 1000,
@@ -95,14 +95,14 @@
     "pawn": {
         "legacy_plugins": [],
         "main_scripts": [
-            "gungame 1"
+            "santorini 1"
         ],
         "side_scripts": []
     },
     "rcon": {
-        "allow_teleport": false,
+        "allow_teleport": true,
         "enable": false,
-        "password": "changeme1"
+        "password": "0011"
     },
     "sleep": 5.0,
     "use_dyn_ticks": true,
