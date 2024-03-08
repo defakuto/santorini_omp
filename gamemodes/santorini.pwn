@@ -1,6 +1,42 @@
-/** 
-TODO :
-*/
+/**
+TODO : Score System (get and lose score, economy...)
+TODO : Economy System (based on Score, get what u can have or dont can have, buy or do...)
+TODO : Superpower System (pick two or three superpower u can use, driving skill, jump, speedrun, etc...)
+TODO : Weather (random weather, rain, sunny, dust, etc...)
+TODO : Superarea (random zones on map get change of gravity or something else, idk now, i will see...)
+TODO : Gunpack (create your gunpack, just type command and select, get your guns (must pay every time))
+TODO : Tunepack (create your tunepack, just type command and select tune u created for vehicle)
+TODO : vcall (get vehicle from garage you want, in location near you)
+TODO : Garage (buy garage to get all vehicles in use)
+TODO : Airstike (buy airstrike and activate with "Satchel Explosives" or "Camera" where u activate/shoot)
+TODO : Missions (create unicate missions for players to be fun...)
+
+Critical
+//! Last Position (when you been kicked on login, coordinate going to reset, also the skin...)
+//! Shoot Move (when you shoot, you get teleported ((can be stuck underground or in object)(works but not the whole idea), need to find a_math or write math for that and create to move it smooth)
+//! 
+//!
+//!
+//!
+//!
+
+Progress
+//? Advanced Register and Login (maybe textdraw if i find somebody to make it for free...)
+//? Advanced Staff (integration with discord or something, i dont have idea...)
+//? Advanced Wanted (more bribe points and more wanted points, completing arrest and economy)
+//? Advanced Racewars (more checkpoints, add rockets to cars, some additional stuff like flying combo or slowing cars in radius)
+//? Advanced Shoot Move (make it smooth and give amount of time how often can use it)
+//?
+
+Done
+//* Simple Register and Login
+//* Simple Staff
+//* Simple Wanted
+//* Simple Racewars
+//* Simple Shoot Move
+//*
+
+**/
 
 //? Compiler Settings
 #pragma option -d3
@@ -276,7 +312,6 @@ public OnPlayerText(playerid, text[])
 {
 	return 1;
 }
-
 public OnPlayerUpdate(playerid)
 {
 	if (IsPlayerInRangeOfPoint(playerid, 1.0, -1370.4532, 2052.9966, 52.5156))
@@ -596,6 +631,11 @@ public OnPlayerClickPlayer(playerid, clickedplayerid, CLICK_SOURCE:source)
 
 public OnPlayerWeaponShot(playerid, WEAPON:weaponid, BULLET_HIT_TYPE:hittype, hitid, Float:fX, Float:fY, Float:fZ)
 {
+	if (weaponid == WEAPON_SILENCED) 
+	{
+		SetPlayerPos(playerid, fX, fY, fZ);
+    }
+
 	return 1;
 }
 
@@ -797,9 +837,9 @@ Dialog: dialog_login(const playerid, response, listitem, string: inputtext[])
 
 		++player_LoginAttempts[playerid];
 		Dialog_Show(playerid, "dialog_login", DIALOG_STYLE_PASSWORD,
-			"Prijavljivanje",
-			"%s, unesite Vasu tacnu lozinku: ",
-			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+			"Login",
+			"%s, wrong password, try again: ",
+			"Ok", "Exit", ReturnPlayerName(playerid)
 		);
 	}
 
