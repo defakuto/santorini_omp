@@ -1,9 +1,110 @@
-#include <open.mp>
+/** 
+TODO :
+*/
 
+//? Compiler Settings
+#pragma option -d3
+//? Pre-Defined
+#define YSI_YES_HEAP_MALLOC
+#define YSI_NO_VERSION_CHECK
+#define YSI_NO_MODE_CACHE
+#define YSI_NO_OPTIMISATION_MESSAGE
+//? Code Generation for hooks
+#define CGEN_MEMORY 60000
+//? Main Library
+#include <open.mp>
+//? YSI Library
+#include <ysilib\YSI_Coding\y_hooks>
+#include <ysilib\YSI_Core\y_utils.inc>
+#include <ysilib\YSI_Storage\y_ini>
+#include <ysilib\YSI_Coding\y_timers>
+#include <ysilib\YSI_Visual\y_commands>
+#include <ysilib\YSI_Data\y_foreach>
+#include <ysilib\YSI_Data\y_iterate>
+#include <ysilib\YSI_Coding\y_va>
+//? Other Library
+#include <sscanf2>
+#include <streamer>
+#include <mapfix>
+#include <easyDialog>
+#include <distance>
+
+#define     color_server        "{0099ff}"
+#define     color_red           "{ff1100}"
+#define     color_blue          "{0099cc}"
+#define     color_white         "{ffffff}"
+#define     color_yellow        "{f2ff00}"
+#define     color_green         "{009933}"
+#define     color_pink          "{ff00bb}"
+#define     color_ltblue        "{00f2ff}"
+#define     color_orange        "{ffa200}"
+#define     color_greey         "{787878}"
+
+static stock const USER_PATH[64] = "/Users/%s.ini";
+
+const MAX_PASSWORD_LENGTH = 64;
+const MIN_PASSWORD_LENGTH = 6;
+const MAX_LOGIN_ATTEMPTS = 	3;
+const MAX_NAME_LENGTH = 20;
+
+enum
+{
+	e_SPAWN_TYPE_REGISTER = 1,
+    e_SPAWN_TYPE_LOGIN
+};
+
+static  
+    player_Password[MAX_PLAYERS][MAX_PASSWORD_LENGTH],
+    player_Sex[MAX_PLAYERS][2],
+	player_Name[MAX_PLAYERS][MAX_NAME_LENGTH],
+	player_Lastname[MAX_PLAYERS][MAX_NAME_LENGTH],
+    player_Score[MAX_PLAYERS],
+	player_Skin[MAX_PLAYERS],
+    player_Money[MAX_PLAYERS],
+    player_Ages[MAX_PLAYERS],
+    player_LoginAttempts[MAX_PLAYERS],
+	player_Staff[MAX_PLAYERS],
+	player_Wanted[MAX_PLAYERS];
+
+new stfveh[MAX_PLAYERS] = { INVALID_VEHICLE_ID, ... };
+
+forward Account_Load(const playerid, const string: name[], const string: value[]);
+public Account_Load(const playerid, const string: name[], const string: value[])
+{
+	INI_String("Password", player_Password[playerid]);
+	INI_String("Sex", player_Sex[playerid]);
+	INI_String("Name", player_Name[playerid]);
+	INI_String("Lastname", player_Lastname[playerid]);
+	INI_Int("Level", player_Score[playerid]);
+	INI_Int("Skin", player_Skin[playerid]);
+	INI_Int("Money", player_Money[playerid]);
+	INI_Int("Staff", player_Staff[playerid]);
+	INI_Int("Wanted", player_Wanted[playerid]);
+
+	return 1;
+}
+
+new Float:camera_Locations[][3] = {
+
+    {-2204.0217,-2309.4954,31.3750  }, //
+    { -2169.8269,-2319.3391,30.6325 }, //
+    { -2165.7629,-2416.6877,30.8280 }  //
+};
+
+//? 
 main()
 {
-
+    print("-                                     -");
+	print(" Founder : defakuto");
+	print(" Version : 0.0.1");
+	print("-                                     -");
+	print("> Gamemode Starting...");
+	print(">> Santorini Gamemode Started");
+    print("-                                     -");
 }
+
+#define PRESSED(%0) \
+	(((newkeys & (%0)) == (%0)) && ((oldkeys & (%0)) != (%0)))
 
 public OnGameModeInit()
 {
@@ -17,11 +118,46 @@ public OnGameModeExit()
 
 public OnPlayerConnect(playerid)
 {
+	TogglePlayerSpectating(playerid, false);
+	SetPlayerColor(playerid, -1);
+
+	if (fexist(Account_Path(playerid)))
+	{
+		INI_ParseFile(Account_Path(playerid), "Account_Load", true, true, playerid);
+		Dialog_Show(playerid, "dialog_login", DIALOG_STYLE_PASSWORD,
+			"Prijavljivanje",
+			"%s, unesite Vasu tacnu lozinku: ",
+			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+		);
+
+		return 1;
+	}
+
+	Dialog_Show(playerid, "dialog_regpassword", DIALOG_STYLE_INPUT,
+		"Registracija",
+		"%s, unesite Vasu zeljenu lozinku: ",
+		"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+	);
+
+	stfveh[playerid] = INVALID_VEHICLE_ID;
+
 	return 1;
 }
 
 public OnPlayerDisconnect(playerid, reason)
 {
+	new INI:File = INI_Open(Account_Path(playerid));
+    INI_SetTag(File,"data");
+    INI_WriteInt(File, "Level",GetPlayerScore(playerid));
+    INI_WriteInt(File, "Skin",GetPlayerSkin(playerid));
+    INI_WriteInt(File, "Money", GetPlayerMoney(playerid));
+	INI_WriteInt(File, "Staff", player_Staff[playerid]);
+    INI_WriteInt(File, "Wanted", player_Wanted[playerid]);
+    INI_Close(File);
+
+	DestroyVehicle(stfveh[playerid]);
+	stfveh[playerid] = INVALID_PLAYER_ID;
+
 	return 1;
 }
 
@@ -32,11 +168,22 @@ public OnPlayerRequestClass(playerid, classid)
 
 public OnPlayerSpawn(playerid)
 {
+	SetPlayerTeam(playerid, NO_TEAM);
+
+	if(player_Wanted[playerid] != 0) 
+	{
+	    SetPlayerWantedLevel(playerid, player_Wanted[playerid]);
+        PlayCrimeReportForPlayer(playerid, 0, 16);
+	}
+
 	return 1;
 }
 
 public OnPlayerDeath(playerid, killerid, WEAPON:reason)
 {
+	DestroyVehicle(stfveh[playerid]);
+	stfveh[playerid] = INVALID_PLAYER_ID;
+
 	return 1;
 }
 
@@ -52,6 +199,19 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 
 public OnVehicleSpawn(vehicleid)
 {
+	new
+		bool:engine, bool:lights, bool:alarm, bool:doors, bool:bonnet, bool:boot, bool:objective;
+	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+
+    if (IsVehicleBicycle(GetVehicleModel(vehicleid)))
+    {
+        SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, doors, bonnet, boot, objective);
+    }
+    else 
+    {
+        SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, doors, bonnet, boot, objective);
+    }
+
 	return 1;
 }
 
@@ -92,11 +252,99 @@ public OnPlayerUpdate(playerid)
 
 public OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
 {
+	if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
+    {
+        if(newkeys & KEY_NO)
+        {
+            new veh = GetPlayerVehicleID(playerid),
+                bool:engine,
+                bool:lights,
+                bool:alarm,
+                bool:doors,
+                bool:bonnet,
+                bool:boot,
+                bool:objective;
+            
+            if(IsVehicleBicycle(GetVehicleModel(veh)))
+            {
+                return true;
+            }
+            
+            GetVehicleParamsEx(veh, engine, lights, alarm, doors, bonnet, boot, objective);
+
+            if(engine == VEHICLE_PARAMS_OFF)
+            {
+                SetVehicleParamsEx(veh, VEHICLE_PARAMS_ON, lights, alarm, doors, bonnet, boot, objective);
+            }
+            else
+            {
+                SetVehicleParamsEx(veh, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
+            }
+
+            new str[60];
+            format(str, sizeof(str),""color_server"Santorini // "color_white"%s turn engine.", (engine == VEHICLE_PARAMS_OFF) ? "on" : "off");
+            SendClientMessage(playerid, -1, str);
+
+            return true;
+        }
+        if(newkeys & KEY_YES)
+        {
+            new veh = GetPlayerVehicleID(playerid),
+                bool:engine,
+                bool:lights,
+                bool:alarm,
+                bool:doors,
+                bool:bonnet,
+                bool:boot,
+                bool:objective;
+            
+            if(IsVehicleBicycle(GetVehicleModel(veh)))
+            {
+                return true;
+            }
+            
+			GetVehicleParamsEx(veh, engine, lights, alarm, doors, bonnet, boot, objective);
+
+            if(lights == VEHICLE_PARAMS_OFF)
+            {
+                SetVehicleParamsEx(veh, engine, VEHICLE_PARAMS_ON, alarm, doors, bonnet, boot, objective);
+            }
+            else
+            {
+                SetVehicleParamsEx(veh, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
+            }
+            new str[60];
+            format(str, sizeof(str),""color_server"Santorini // "color_white"%s turn lights.", (lights == VEHICLE_PARAMS_OFF) ? "on" : "off");
+            SendClientMessage(playerid, -1, str);
+
+            return true;
+        }
+    }
+
 	return 1;
 }
 
 public OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
 {
+	new veh = GetPlayerVehicleID(playerid),
+            	bool:engine,
+            	bool:lights,
+            	bool:alarm,
+            	bool:doors,
+            	bool:bonnet,
+                bool:boot,
+                bool:objective;
+
+    GetVehicleParamsEx(veh, engine, lights, alarm, doors, bonnet, boot, objective);
+
+	if (newstate == PLAYER_STATE_DRIVER) 
+    {
+        if(engine == VEHICLE_PARAMS_OFF)
+        {   
+            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"To start engine press 'N'");
+        }
+	}
+
 	return 1;
 }
 
@@ -272,6 +520,29 @@ public OnPlayerStreamOut(playerid, forplayerid)
 
 public OnPlayerTakeDamage(playerid, issuerid, Float:amount, WEAPON:weaponid, bodypart)
 {
+	if(issuerid != INVALID_PLAYER_ID && bodypart == 9)
+    {
+        SetPlayerHealth(playerid, 0.0);
+    }
+
+	if(player_Wanted[issuerid] == 6) return 1;
+    for(new i = 0; i < sizeof camera_Locations; i++) 
+	{
+        if(IsPlayerInRangeOfPoint(issuerid, 40.0, camera_Locations[i][0], camera_Locations[i][1], camera_Locations[i][2])) 
+		{
+            player_Wanted[issuerid]++;
+            SetPlayerWantedLevel(issuerid, player_Wanted[issuerid]);
+            PlayCrimeReportForPlayer(issuerid, 0, 16);
+
+            new INI:File = INI_Open(Account_Path(issuerid));
+            INI_SetTag(File,"data");
+            INI_WriteInt(File, "Wanted", player_Wanted[issuerid]);
+            INI_Close(File);
+
+            break;
+        }
+    }
+
 	return 1;
 }
 
@@ -369,3 +640,675 @@ public OnUnoccupiedVehicleUpdate(vehicleid, playerid, passenger_seat, Float:new_
 {
 	return 1;
 }
+
+timer Spawn_Player[100](playerid, type)
+{
+	if (type == e_SPAWN_TYPE_REGISTER)
+		{
+			SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Welcome to the server!");
+			SetSpawnInfo(playerid, NO_TEAM, player_Skin[playerid],
+				-2193.9375, -2256.1196, 30.6873, 151.0796,
+				WEAPON_PARACHUTE, 10, WEAPON_SILENCED, 10, 	WEAPON_TEARGAS, 10
+			);
+			SpawnPlayer(playerid);
+
+			SetPlayerScore(playerid, player_Score[playerid]);
+			GivePlayerMoney(playerid, player_Money[playerid]);
+			SetPlayerSkin(playerid, player_Skin[playerid]);
+		}
+
+		else if (type == e_SPAWN_TYPE_LOGIN)
+		{
+			SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Welcome to the server!");
+			SetSpawnInfo(playerid, 0, player_Skin[playerid],
+				-2193.9375, -2256.1196, 30.6873, 151.0796,
+				WEAPON_PARACHUTE, 10, WEAPON_SILENCED, 10, 	WEAPON_TEARGAS, 10
+			);
+			SpawnPlayer(playerid);
+
+			SetPlayerScore(playerid, player_Score[playerid]);
+			GivePlayerMoney(playerid, player_Money[playerid]);
+			SetPlayerSkin(playerid, player_Skin[playerid]);
+		}
+
+}
+
+Dialog: dialog_regpassword(playerid, response, listitem, string: inputtext[])
+{
+	if (!response)
+		return Kick(playerid);
+
+	Dialog_Show(playerid, "dialog_regpassword", DIALOG_STYLE_INPUT,
+			"Registracija",
+			"%s, unesite Vasu zeljenu lozinku: ",
+			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+		);
+
+	strcopy(player_Password[playerid], inputtext);
+
+	Dialog_Show(playerid, "dialog_regname", DIALOG_STYLE_INPUT,
+		"Ime",
+		"Upisite vase Ime: ",
+		"Unesi", "Izlaz"
+	);
+
+	return 1;
+}
+
+Dialog: dialog_regname(playerid, response, listitem, string: inputtext[])
+{
+	if (!response)
+		return Kick(playerid);
+
+	Dialog_Show(playerid, "dialog_regname", DIALOG_STYLE_INPUT,
+			"Ime",
+			"Upisite vase Ime: ",
+			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+		);
+
+	strcopy(player_Name[playerid], inputtext);
+
+	Dialog_Show(playerid, "dialog_reglastname", DIALOG_STYLE_INPUT,
+		"Registracija",
+		"Upisite vase Prezime: ",
+		"Unesi", "Izlaz"
+	);
+
+	return 1;
+}
+
+Dialog: dialog_reglastname(playerid, response, listitem, string: inputtext[])
+{
+	if (!response)
+		return Kick(playerid);
+
+	Dialog_Show(playerid, "dialog_reglastname", DIALOG_STYLE_INPUT,
+			"Prezime",
+			"Upisite vase Prezime: ",
+			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+		);
+
+	strcopy(player_Lastname[playerid], inputtext);
+
+	Dialog_Show(playerid, "dialog_regages", DIALOG_STYLE_INPUT,
+		"Godine",
+		"Koliko imate godina: ",
+		"Unesi", "Izlaz"
+	);
+
+	return 1;
+}
+
+Dialog: dialog_regages(const playerid, response, listitem, string: inputtext[])
+{
+	if (!response)
+		return Kick(playerid);
+
+	if (!(12 <= strval(inputtext) <= 50))
+		return Dialog_Show(playerid, "dialog_regages", DIALOG_STYLE_INPUT,
+			"Godine",
+			"Koliko imate godina: ",
+			"Unesi", "Izlaz"
+		);
+
+	player_Ages[playerid] = strval(inputtext);
+
+	Dialog_Show(playerid, "dialog_regsex", DIALOG_STYLE_LIST,
+	"Spol",
+	"Musko\nZensko",
+	"Odaberi", "Izlaz"
+	);
+
+	return 1;
+}
+
+Dialog: dialog_regsex(const playerid, response, listitem, string: inputtext[])
+{
+	if (!response)
+		return Kick(playerid);
+
+	new tmp_int = listitem + 1;
+
+	new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag(File,"data");
+	INI_WriteString(File, "Password", player_Password[playerid]);
+	INI_WriteString(File, "Name", player_Name[playerid]);
+	INI_WriteString(File, "Lastname", player_Lastname[playerid]);
+	INI_WriteString(File, "Sex", (tmp_int == 1 ? ("Musko") : ("Zensko")));
+	INI_WriteInt(File, "Age", player_Ages[playerid]);
+	INI_WriteInt(File, "Level", 0);
+	INI_WriteInt(File, "Skin", 240);
+	INI_WriteInt(File, "Money", 1000);
+	INI_WriteInt(File, "Staff", 0);
+	INI_Close(File);
+
+	player_Money[playerid] = 1000;
+	player_Skin[playerid] = 240;
+	player_Score[playerid] = 0;
+
+	defer Spawn_Player(playerid, 1);
+	
+	return 1;
+}
+
+Dialog: dialog_login(const playerid, response, listitem, string: inputtext[])
+{
+	if (!response)
+		return Kick(playerid);
+
+	if (!strcmp(player_Password[playerid], inputtext, false))
+		defer Spawn_Player(playerid, 2);
+	else
+	{
+		if (player_LoginAttempts[playerid] == MAX_LOGIN_ATTEMPTS)
+			return Kick(playerid);
+
+		++player_LoginAttempts[playerid];
+		Dialog_Show(playerid, "dialog_login", DIALOG_STYLE_PASSWORD,
+			"Prijavljivanje",
+			"%s, unesite Vasu tacnu lozinku: ",
+			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+		);
+	}
+
+	return 1;
+}
+
+stock Account_Path(const playerid)
+{
+	new tmp_fmt[64];
+	format(tmp_fmt, sizeof(tmp_fmt), USER_PATH, ReturnPlayerName(playerid));
+
+	return tmp_fmt;
+}
+
+stock IsVehicleBicycle(m)
+{
+    if (m == 481 || m == 509 || m == 510) return true;
+    
+    return false;
+}
+
+stock GetVehicleSpeed(vehicleid)
+{
+	new Float:xPos[3];
+
+	GetVehicleVelocity(vehicleid, xPos[0], xPos[1], xPos[2]);
+
+	return floatround(floatsqroot(xPos[0] * xPos[0] + xPos[1] * xPos[1] + xPos[2] * xPos[2]) * 170.00);
+}
+
+YCMD:help(playerid, params[], help)
+{
+	if (help)
+	{
+		SendClientMessage(playerid, -1, "Use `/help <command>` to get information about the command.");
+	}
+	else if (IsNull(params))
+	{
+		SendClientMessage(playerid, -1, "Please enter a command.");
+	}
+	else
+	{
+		Command_ReProcess(playerid, params, true);
+	}
+	return 1;
+}
+
+
+YCMD:staffcmd(playerid, const string: params[], help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command show you all staff commands.");
+        return 1;
+    }
+
+	if(!player_Staff[playerid])
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	Dialog_Show(playerid, "dialog_staffcmd", DIALOG_STYLE_MSGBOX,
+	""color_server"Santorini // "color_white"Staff Commands",
+	""color_white"%s, Vi ste deo naseg "color_server"staff "color_white"tima!\n\
+	"color_server"SLVL1 >> "color_white"/sduty\n\
+	"color_server"SLVL1 >> "color_white"/sc\n\
+	"color_server"SLVL1 >> "color_white"/staffcmd\n\
+	"color_server"SLVL1 >> "color_white"/sveh\n\
+	"color_server"SLVL1 >> "color_white"/goto\n\
+	"color_server"SLVL1 >> "color_white"/cc\n\
+	"color_server"SLVL1 >> "color_white"/fv\n\
+	"color_server"SLVL2 >> "color_white"/gethere\n\
+	"color_server"SLVL3 >> "color_white"/nitro\n\
+	"color_server"SLVL4 >> "color_white"/jetpack\n\
+	"color_server"SLVL4 >> "color_white"/setskin\n\
+	"color_server"SLVL4 >> "color_white"/xgoto\n\
+	"color_server"SLVL4 >> "color_white"/spanel\n\
+	"color_server"SLVL4 >> "color_white"/setstaff",
+	"OK", "", ReturnPlayerName(playerid)
+	);
+
+    return 1;
+}
+
+YCMD:sc(playerid, const string: params[], help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This is command for Staff Chat.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	if (isnull(params))
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/sc [text]");
+
+	static tmp_str[128];
+
+	format(tmp_str, sizeof(tmp_str), "Staff - %s(%d): "color_white"%s", ReturnPlayerName(playerid), playerid, params);
+
+	foreach (new i: Player)
+		if (player_Staff[i])
+			SendClientMessage(i, -1, tmp_str);
+	
+    return 1;
+}
+
+YCMD:sveh(playerid, params[], help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command create your staff vehicle.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	new Float:x, Float:y, Float:z;
+
+	GetPlayerPos(playerid, x, y, z);
+
+	if (stfveh[playerid] == INVALID_VEHICLE_ID) 
+	{
+		if (isnull(params))
+			return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/sveh [Model ID]");
+
+		new modelid = strval(params);
+
+		if (400 > modelid > 611)
+			return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"* Valid models from 400 to 611.");
+
+		new vehicleid = stfveh[playerid] = CreateVehicle(modelid, x, y, z, 0.0, 1, 0, -1);
+
+		SetVehicleNumberPlate(vehicleid, "STAFF");
+		PutPlayerInVehicle(playerid, vehicleid, 0);
+		
+	    new bool:engine, bool:lights, bool:alarm, bool:doors, bool:bonnet, bool:boot, bool:objective;
+	    GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
+
+	    if (IsVehicleBicycle(GetVehicleModel(vehicleid)))
+	    {
+	        SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, doors, bonnet, boot, objective);
+	    }
+	    else
+	    {
+	        SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, doors, bonnet, boot, objective);
+	    }
+		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You created a vehicle, to destroy type '/sveh'.");
+	}
+	else 
+	{
+		DestroyVehicle(stfveh[playerid]);
+		stfveh[playerid] = INVALID_PLAYER_ID;
+		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You destroy a vehicle, to create type '/veh [Model ID]'.");
+	}
+	
+    return 1;
+}
+
+YCMD:goto(playerid, params[],help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command allow you teleport to player.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	new giveplayerid, giveplayer[MAX_PLAYER_NAME];
+
+	new Float:plx,Float:ply,Float:plz;
+
+	GetPlayerName(giveplayerid, giveplayer, sizeof(giveplayer));
+
+	if(!sscanf(params, "u", giveplayerid))
+	{	
+		GetPlayerPos(giveplayerid, plx, ply, plz);
+			
+		if (GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
+		{
+			new tmpcar = GetPlayerVehicleID(playerid);
+			SetVehiclePos(tmpcar, plx, ply+4, plz);
+		}
+		else
+		{
+			SetPlayerPos(playerid,plx,ply+2, plz);
+		}
+		SetPlayerInterior(playerid, GetPlayerInterior(giveplayerid));
+	}
+    return 1;
+}
+
+YCMD:cc(playerid, params[], help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command will clear chat to all.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	for(new cc; cc < 110; cc++)
+	{
+		SendClientMessageToAll(-1, "");
+	}
+
+	if(player_Staff[playerid] < 1)
+	{
+		static fmt_string[120];
+		format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"chat is cleared by"color_server" %s", ReturnPlayerName(playerid));
+		SendClientMessageToAll(-1, fmt_string);
+	}
+    return 1;
+}
+
+YCMD:fv(playerid, params[], help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command fix your vehicle.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	new vehicleid = GetPlayerVehicleID(playerid);
+
+	if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You are not in vehicle!");
+
+	RepairVehicle(vehicleid);
+
+	SetVehicleHealth(vehicleid, 999.0);
+
+	return 1;
+}
+
+YCMD:gethere(playerid, const params[], help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command teleport player to you.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	new targetid = INVALID_PLAYER_ID;
+
+	if(sscanf(params, "u", targetid)) return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/gethere [id]");
+
+	if(targetid == INVALID_PLAYER_ID) return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That ID is not connected.");
+
+	new Float:x, Float:y, Float:z;
+
+	GetPlayerPos(playerid, x, y, z);
+
+	SetPlayerPos(targetid, x+1, y, z+1);
+
+	SetPlayerInterior(targetid, GetPlayerInterior(playerid));
+
+	SetPlayerVirtualWorld(targetid, GetPlayerVirtualWorld(playerid));
+
+	new name[MAX_PLAYER_NAME];
+	GetPlayerName(targetid, name, sizeof(name));
+
+	static fmt_string[60];
+
+	format(fmt_string, sizeof(fmt_string),""color_server"Santorini // "color_white"You teleported player %s to you.", name);
+	SendClientMessage(playerid, -1, fmt_string);
+
+	GetPlayerName(playerid, name, sizeof(name));
+
+	format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"Staff %s teleported you to him.", name);
+	SendClientMessage(targetid, -1, fmt_string);
+
+    return 1;
+}
+
+YCMD:nitro(playerid, params[], help)
+{
+	if(help)
+    {
+		SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command give you a nitro.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	AddVehicleComponent(GetPlayerVehicleID(playerid), 1010);
+
+	SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You put nitro in your vehicle.");
+
+	return 1;
+}
+
+YCMD:jetpack(playerid, params[], help)
+{
+	if(help)
+    {
+		SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command give you jetpack.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_USEJETPACK);
+
+	SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You take a jetpack.");
+
+	return 1;
+}
+
+YCMD:setskin(playerid, const string: params[], help)
+{
+	if(help)
+    {
+		SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command allow you to put skin from 1 to 311.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	static
+		targetid,
+		skinid;
+
+	if (sscanf(params, "ri", targetid, skinid))
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/setskin [targetid] [skinid]");
+
+	if (!(1 <= skinid <= 311))
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Wrong skinid!");
+
+	if (GetPlayerSkin(targetid) == skinid)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Player have that skinid!");
+
+	SetPlayerSkin(targetid, skinid);
+
+	player_Skin[targetid] = skinid;
+
+    new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag( File, "data" );
+    INI_WriteInt(File, "Skin", GetPlayerSkin(playerid));
+	INI_Close( File );
+
+    return 1;
+}
+
+YCMD:xgoto(playerid, params[], help)
+{
+	if(help)
+    {
+		SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command teleport you to coordinate.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	new Float:x, Float:y, Float:z;
+
+	static fmt_string[100];
+
+	if (sscanf(params, "fff", x, y, z)) SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"xgoto <X Float> <Y Float> <Z Float>");
+	else
+	{
+		if(IsPlayerInAnyVehicle(playerid))
+		{
+		    SetVehiclePos(GetPlayerVehicleID(playerid), x,y,z);
+		}
+		else
+		{
+		    SetPlayerPos(playerid, x, y, z);
+		}
+		format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"You set coordinate to %f, %f, %f", x, y, z);
+		SendClientMessage(playerid, -1, fmt_string);
+	}
+ 	return 1;
+}
+
+YCMD:setstaff(playerid, const string: params[], help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"0 - Revoke Staff | 1. Assistent | 2. Admin | 3. Manager | 4. High Command.");
+        return 1;
+    }
+
+	if(!IsPlayerAdmin(playerid))
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You Must Be RCON!");
+
+	static
+		targetid,
+		level;
+
+	if (sscanf(params, "ri", targetid, level))
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/setstaff [targetid] [0/1]");
+
+	if (!level && !player_Staff[targetid])
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That player is not a part of Staff Team.");
+
+	if (level == player_Staff[targetid])
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That player is alredy part of Staff Team.");
+
+	player_Staff[targetid] = level;
+	
+	if (!level)
+	{
+		static fmt_string[64];
+
+		format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"%s demote you from Staff Team.", ReturnPlayerName(playerid));
+		SendClientMessage(targetid, -1, fmt_string);
+
+		format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"Izbacili ste %s iz staff-a.", ReturnPlayerName(targetid));
+		SendClientMessage(playerid, -1, fmt_string);
+	}
+	else if(level < 0 || level > 4) return SendClientMessage(playerid, -1, ""color_white"Santorini // "color_white"Please use "color_blue"-/help setstaff- "color_white"to see all staff levels.");
+	{
+		static fmt_string[64];
+
+		format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"%s promote you to Staff Team.", ReturnPlayerName(playerid));
+		SendClientMessage(targetid, -1, fmt_string);
+
+		format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"You promoted %s to Staff Team.", ReturnPlayerName(targetid));
+		SendClientMessage(playerid, -1, fmt_string);
+	}
+
+    new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag( File, "data" );
+    INI_WriteInt(File, "Staff", player_Staff[playerid]);
+	INI_Close( File );
+	
+    return 1;
+}
+
+YCMD:kick(playerid, params[],help)
+{
+	if(help)
+    {
+        SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"The command allow you to kick player from server.");
+        return 1;
+    }
+
+	if (player_Staff[playerid] < 1)
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
+
+	static 
+		targetid;
+
+	if (sscanf(params, "ri", targetid))
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/kick [targetid]");
+
+	static fmt_string[64];
+
+	format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"%s kick you from the server.", ReturnPlayerName(playerid));
+	SendClientMessage(targetid, -1, fmt_string);
+
+	format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"You kick %s from server.", ReturnPlayerName(targetid));
+	SendClientMessage(playerid, -1, fmt_string);
+
+	SetTimerEx("DelayedKick", 1000, false, "i", targetid);
+
+    return 1;
+}
+
+forward DelayedKick(targetid);
+public DelayedKick(targetid)
+{
+    Kick(targetid);
+    return 1;
+}
+
+//testcmd
+
+YCMD:clearwl(playerid, const string: params[], help)
+{
+	SetPlayerWantedLevel(playerid, 0);
+
+	player_Wanted[playerid] = 0;
+
+    new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag(File,"data");
+    INI_WriteInt(File, "Wanted", player_Wanted[playerid]);
+    INI_Close(File);
+
+	return 1;
+}
+
+YCMD:restart(playerid, const string: params[], help)
+{
+	SendRconCommand("gmx");
+
+    return 1;
+}
+
