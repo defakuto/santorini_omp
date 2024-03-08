@@ -53,11 +53,11 @@ enum
     e_SPAWN_TYPE_LOGIN
 };
 
+const MAX_CHECKPOINTS = 6;
+
 static  
     player_Password[MAX_PLAYERS][MAX_PASSWORD_LENGTH],
     player_Sex[MAX_PLAYERS][2],
-	player_Name[MAX_PLAYERS][MAX_NAME_LENGTH],
-	player_Lastname[MAX_PLAYERS][MAX_NAME_LENGTH],
     player_Score[MAX_PLAYERS],
 	player_Skin[MAX_PLAYERS],
     player_Money[MAX_PLAYERS],
@@ -66,6 +66,12 @@ static
 	player_Staff[MAX_PLAYERS],
 	player_Wanted[MAX_PLAYERS];
 
+//? PlayerLastPosition
+new 
+    Float:player_PosX[MAX_PLAYERS],
+    Float:player_PosY[MAX_PLAYERS],
+    Float:player_PosZ[MAX_PLAYERS];
+
 new stfveh[MAX_PLAYERS] = { INVALID_VEHICLE_ID, ... };
 
 forward Account_Load(const playerid, const string: name[], const string: value[]);
@@ -73,13 +79,14 @@ public Account_Load(const playerid, const string: name[], const string: value[])
 {
 	INI_String("Password", player_Password[playerid]);
 	INI_String("Sex", player_Sex[playerid]);
-	INI_String("Name", player_Name[playerid]);
-	INI_String("Lastname", player_Lastname[playerid]);
 	INI_Int("Level", player_Score[playerid]);
 	INI_Int("Skin", player_Skin[playerid]);
 	INI_Int("Money", player_Money[playerid]);
 	INI_Int("Staff", player_Staff[playerid]);
 	INI_Int("Wanted", player_Wanted[playerid]);
+	INI_Float("positionX", player_PosX[playerid]);
+	INI_Float("positionY", player_PosY[playerid]);
+	INI_Float("positionZ", player_PosZ[playerid]);
 
 	return 1;
 }
@@ -91,7 +98,17 @@ new Float:camera_Locations[][3] = {
     { -2165.7629,-2416.6877,30.8280 }  //
 };
 
-//? 
+new 
+	Float:checkpoints[MAX_CHECKPOINTS][3],
+	Float:player_checkpoints[MAX_PLAYERS][3];
+
+new
+	actor_Bribe;
+
+#define PRESSED(%0) \
+	(((newkeys & (%0)) == (%0)) && ((oldkeys & (%0)) != (%0)))
+
+//? Gamemode Load
 main()
 {
     print("-                                     -");
@@ -103,11 +120,19 @@ main()
     print("-                                     -");
 }
 
-#define PRESSED(%0) \
-	(((newkeys & (%0)) == (%0)) && ((oldkeys & (%0)) != (%0)))
-
 public OnGameModeInit()
 {
+	//? racewars checkpoints
+	AddCheckpoint(-797.1331, 1437.6632, 13.4590);
+    AddCheckpoint(-691.6770, 2063.8733, 60.0516);
+    AddCheckpoint(-2087.2461, 2315.1165, 25.9141);
+    AddCheckpoint(-1111.9960, 2699.2837, 45.5422);
+    AddCheckpoint(-1296.5348, 2497.5652, 86.6384);
+    AddCheckpoint(-1067.0332, 2196.3735, 87.4105);
+
+	//?
+	actor_Bribe = CreateActor(266, -1370.4532, 2052.9966, 52.5156, 106.4529);
+
 	return 1;
 }
 
@@ -125,19 +150,21 @@ public OnPlayerConnect(playerid)
 	{
 		INI_ParseFile(Account_Path(playerid), "Account_Load", true, true, playerid);
 		Dialog_Show(playerid, "dialog_login", DIALOG_STYLE_PASSWORD,
-			"Prijavljivanje",
-			"%s, unesite Vasu tacnu lozinku: ",
-			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+			"Login",
+			"%s, type your password: ",
+			"Ok", "Exit", ReturnPlayerName(playerid)
 		);
 
 		return 1;
 	}
 
 	Dialog_Show(playerid, "dialog_regpassword", DIALOG_STYLE_INPUT,
-		"Registracija",
-		"%s, unesite Vasu zeljenu lozinku: ",
-		"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+		"Register",
+		"%s, type your password: ",
+		"Ok", "Exit", ReturnPlayerName(playerid)
 	);
+
+	SetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
 
 	stfveh[playerid] = INVALID_VEHICLE_ID;
 
@@ -146,6 +173,8 @@ public OnPlayerConnect(playerid)
 
 public OnPlayerDisconnect(playerid, reason)
 {
+	GetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
+
 	new INI:File = INI_Open(Account_Path(playerid));
     INI_SetTag(File,"data");
     INI_WriteInt(File, "Level",GetPlayerScore(playerid));
@@ -153,6 +182,9 @@ public OnPlayerDisconnect(playerid, reason)
     INI_WriteInt(File, "Money", GetPlayerMoney(playerid));
 	INI_WriteInt(File, "Staff", player_Staff[playerid]);
     INI_WriteInt(File, "Wanted", player_Wanted[playerid]);
+	INI_WriteFloat(File, "positionX", player_PosX[playerid]);
+    INI_WriteFloat(File, "positionY", player_PosY[playerid]);
+    INI_WriteFloat(File, "positionZ", player_PosZ[playerid]);
     INI_Close(File);
 
 	DestroyVehicle(stfveh[playerid]);
@@ -247,6 +279,12 @@ public OnPlayerText(playerid, text[])
 
 public OnPlayerUpdate(playerid)
 {
+	if (IsPlayerInRangeOfPoint(playerid, 1.0, -1370.4532, 2052.9966, 52.5156))
+	{
+		ApplyActorAnimation(actor_Bribe, "ped", "IDLE_chat", 4.1, false, false, false, false, 0);
+		SendClientMessage(playerid, -1, "Shh. - if you want to get your wanted record free, get me $5000.");
+	}
+
 	return 1;
 }
 
@@ -282,7 +320,7 @@ public OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
             }
 
             new str[60];
-            format(str, sizeof(str),""color_server"Santorini // "color_white"%s turn engine.", (engine == VEHICLE_PARAMS_OFF) ? "on" : "off");
+            format(str, sizeof(str),""color_server"Santorini // "color_white"Engine State : %s", (engine == VEHICLE_PARAMS_OFF) ? "on" : "off");
             SendClientMessage(playerid, -1, str);
 
             return true;
@@ -314,7 +352,7 @@ public OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
                 SetVehicleParamsEx(veh, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
             }
             new str[60];
-            format(str, sizeof(str),""color_server"Santorini // "color_white"%s turn lights.", (lights == VEHICLE_PARAMS_OFF) ? "on" : "off");
+            format(str, sizeof(str),""color_server"Santorini // "color_white"Lights State : %s", (lights == VEHICLE_PARAMS_OFF) ? "on" : "off");
             SendClientMessage(playerid, -1, str);
 
             return true;
@@ -647,7 +685,7 @@ timer Spawn_Player[100](playerid, type)
 		{
 			SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Welcome to the server!");
 			SetSpawnInfo(playerid, NO_TEAM, player_Skin[playerid],
-				-2193.9375, -2256.1196, 30.6873, 151.0796,
+				-2117.0735, 2596.7383, 905.1039, 292.1759,
 				WEAPON_PARACHUTE, 10, WEAPON_SILENCED, 10, 	WEAPON_TEARGAS, 10
 			);
 			SpawnPlayer(playerid);
@@ -661,7 +699,7 @@ timer Spawn_Player[100](playerid, type)
 		{
 			SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Welcome to the server!");
 			SetSpawnInfo(playerid, 0, player_Skin[playerid],
-				-2193.9375, -2256.1196, 30.6873, 151.0796,
+				player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid], 0,
 				WEAPON_PARACHUTE, 10, WEAPON_SILENCED, 10, 	WEAPON_TEARGAS, 10
 			);
 			SpawnPlayer(playerid);
@@ -679,61 +717,17 @@ Dialog: dialog_regpassword(playerid, response, listitem, string: inputtext[])
 		return Kick(playerid);
 
 	Dialog_Show(playerid, "dialog_regpassword", DIALOG_STYLE_INPUT,
-			"Registracija",
-			"%s, unesite Vasu zeljenu lozinku: ",
-			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
+			"Register",
+			"%s, type your password: ",
+			"Ok", "Exit", ReturnPlayerName(playerid)
 		);
 
 	strcopy(player_Password[playerid], inputtext);
 
-	Dialog_Show(playerid, "dialog_regname", DIALOG_STYLE_INPUT,
-		"Ime",
-		"Upisite vase Ime: ",
-		"Unesi", "Izlaz"
-	);
-
-	return 1;
-}
-
-Dialog: dialog_regname(playerid, response, listitem, string: inputtext[])
-{
-	if (!response)
-		return Kick(playerid);
-
-	Dialog_Show(playerid, "dialog_regname", DIALOG_STYLE_INPUT,
-			"Ime",
-			"Upisite vase Ime: ",
-			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
-		);
-
-	strcopy(player_Name[playerid], inputtext);
-
-	Dialog_Show(playerid, "dialog_reglastname", DIALOG_STYLE_INPUT,
-		"Registracija",
-		"Upisite vase Prezime: ",
-		"Unesi", "Izlaz"
-	);
-
-	return 1;
-}
-
-Dialog: dialog_reglastname(playerid, response, listitem, string: inputtext[])
-{
-	if (!response)
-		return Kick(playerid);
-
-	Dialog_Show(playerid, "dialog_reglastname", DIALOG_STYLE_INPUT,
-			"Prezime",
-			"Upisite vase Prezime: ",
-			"Potvrdi", "Izlaz", ReturnPlayerName(playerid)
-		);
-
-	strcopy(player_Lastname[playerid], inputtext);
-
 	Dialog_Show(playerid, "dialog_regages", DIALOG_STYLE_INPUT,
-		"Godine",
-		"Koliko imate godina: ",
-		"Unesi", "Izlaz"
+		"Age",
+		"What is your age: ",
+		"Ok", "Exit"
 	);
 
 	return 1;
@@ -746,17 +740,17 @@ Dialog: dialog_regages(const playerid, response, listitem, string: inputtext[])
 
 	if (!(12 <= strval(inputtext) <= 50))
 		return Dialog_Show(playerid, "dialog_regages", DIALOG_STYLE_INPUT,
-			"Godine",
-			"Koliko imate godina: ",
-			"Unesi", "Izlaz"
+			"Age",
+			"What is your age: ",
+			"Ok", "Exit"
 		);
 
 	player_Ages[playerid] = strval(inputtext);
 
 	Dialog_Show(playerid, "dialog_regsex", DIALOG_STYLE_LIST,
-	"Spol",
-	"Musko\nZensko",
-	"Odaberi", "Izlaz"
+	"Gender",
+	"Male\nFemale",
+	"Ok", "Exit"
 	);
 
 	return 1;
@@ -772,9 +766,7 @@ Dialog: dialog_regsex(const playerid, response, listitem, string: inputtext[])
 	new INI:File = INI_Open(Account_Path(playerid));
 	INI_SetTag(File,"data");
 	INI_WriteString(File, "Password", player_Password[playerid]);
-	INI_WriteString(File, "Name", player_Name[playerid]);
-	INI_WriteString(File, "Lastname", player_Lastname[playerid]);
-	INI_WriteString(File, "Sex", (tmp_int == 1 ? ("Musko") : ("Zensko")));
+	INI_WriteString(File, "Sex", (tmp_int == 1 ? ("Male") : ("Female")));
 	INI_WriteInt(File, "Age", player_Ages[playerid]);
 	INI_WriteInt(File, "Level", 0);
 	INI_WriteInt(File, "Skin", 240);
@@ -814,7 +806,9 @@ Dialog: dialog_login(const playerid, response, listitem, string: inputtext[])
 	return 1;
 }
 
-stock Account_Path(const playerid)
+//? Custom Functions
+
+Account_Path(const playerid)
 {
 	new tmp_fmt[64];
 	format(tmp_fmt, sizeof(tmp_fmt), USER_PATH, ReturnPlayerName(playerid));
@@ -822,7 +816,7 @@ stock Account_Path(const playerid)
 	return tmp_fmt;
 }
 
-stock IsVehicleBicycle(m)
+IsVehicleBicycle(m)
 {
     if (m == 481 || m == 509 || m == 510) return true;
     
@@ -837,6 +831,38 @@ stock GetVehicleSpeed(vehicleid)
 
 	return floatround(floatsqroot(xPos[0] * xPos[0] + xPos[1] * xPos[1] + xPos[2] * xPos[2]) * 170.00);
 }
+
+AddCheckpoint(Float:x, Float:y, Float:z)
+{
+    for (new i = 0; i < MAX_CHECKPOINTS; i++)
+    {
+        if (checkpoints[i][0] == 0.0 && checkpoints[i][1] == 0.0 && checkpoints[i][2] == 0.0)
+        {
+            checkpoints[i][0] = x;
+            checkpoints[i][1] = y;
+            checkpoints[i][2] = z;
+            break;
+        }
+    }
+}
+
+GetRandomCheckpoint(playerid)
+{
+    new random_checkpoint = random(MAX_CHECKPOINTS);
+    player_checkpoints[playerid][0] = checkpoints[random_checkpoint][0];
+    player_checkpoints[playerid][1] = checkpoints[random_checkpoint][1];
+    player_checkpoints[playerid][2] = checkpoints[random_checkpoint][2];
+}
+
+StartRace(player1, player2)
+{
+    SetPlayerCheckpoint(player1, player_checkpoints[player1][0], player_checkpoints[player1][1], player_checkpoints[player1][2], 5.0);
+    SetPlayerCheckpoint(player2, player_checkpoints[player1][0], player_checkpoints[player1][1], player_checkpoints[player1][2], 5.0);
+
+    return 1;
+}
+
+//? Commands
 
 YCMD:help(playerid, params[], help)
 {
@@ -1225,7 +1251,7 @@ YCMD:setstaff(playerid, const string: params[], help)
 	
 	if (!level)
 	{
-		static fmt_string[64];
+		static fmt_string[128];
 
 		format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"%s demote you from Staff Team.", ReturnPlayerName(playerid));
 		SendClientMessage(targetid, -1, fmt_string);
@@ -1235,7 +1261,7 @@ YCMD:setstaff(playerid, const string: params[], help)
 	}
 	else if(level < 0 || level > 4) return SendClientMessage(playerid, -1, ""color_white"Santorini // "color_white"Please use "color_blue"-/help setstaff- "color_white"to see all staff levels.");
 	{
-		static fmt_string[64];
+		static fmt_string[128];
 
 		format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"%s promote you to Staff Team.", ReturnPlayerName(playerid));
 		SendClientMessage(targetid, -1, fmt_string);
@@ -1269,7 +1295,7 @@ YCMD:kick(playerid, params[],help)
 	if (sscanf(params, "ri", targetid))
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/kick [targetid]");
 
-	static fmt_string[64];
+	static fmt_string[128];
 
 	format(fmt_string, sizeof(fmt_string), ""color_server"Santorini // "color_white"%s kick you from the server.", ReturnPlayerName(playerid));
 	SendClientMessage(targetid, -1, fmt_string);
@@ -1282,6 +1308,56 @@ YCMD:kick(playerid, params[],help)
     return 1;
 }
 
+YCMD:racewar(playerid, const string: params[], help)
+{
+    static 
+        racerid;
+
+    if (sscanf(params, "u", racerid))
+        return SendClientMessage(playerid, -1, "Usage: /race [racerid]");
+
+    GetRandomCheckpoint(playerid);
+
+    static fmt_string[100];
+
+    if (IsPlayerConnected(racerid))
+    {
+        format(fmt_string, sizeof(fmt_string), "Race started with player %d", racerid);
+        SendClientMessage(playerid, -1, fmt_string);
+
+        StartRace(playerid, racerid);
+    }
+    else
+    {
+        format(fmt_string, sizeof(fmt_string), "Player %d is not connected.", racerid);
+        SendClientMessage(playerid, -1, fmt_string);
+    }
+
+    return 1;
+}
+
+YCMD:bribe(playerid, const string: params[], help)
+{
+	if (IsPlayerInRangeOfPoint(playerid, 5.0, -1370.4532, 2052.9966, 52.5156))
+	{
+		SetPlayerWantedLevel(playerid, 0);
+		ApplyAnimation(playerid, "DEALER", "shop_pay", 4.1, false, false, false, false, 1);
+		ClearActorAnimations(actor_Bribe);
+		SendClientMessage(playerid, -1, "You give $5000 to your wanted record be stored.");
+	}
+
+	player_Wanted[playerid] = 0;
+
+    new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag(File,"data");
+    INI_WriteInt(File, "Wanted", player_Wanted[playerid]);
+    INI_Close(File);
+
+	return 1;
+}
+
+//? additional
+
 forward DelayedKick(targetid);
 public DelayedKick(targetid)
 {
@@ -1289,7 +1365,7 @@ public DelayedKick(targetid)
     return 1;
 }
 
-//testcmd
+//? testcmd
 
 YCMD:clearwl(playerid, const string: params[], help)
 {
@@ -1307,8 +1383,16 @@ YCMD:clearwl(playerid, const string: params[], help)
 
 YCMD:restart(playerid, const string: params[], help)
 {
-	SendRconCommand("gmx");
+	GetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
 
+	new INI:File = INI_Open(Account_Path(playerid));
+    INI_SetTag(File,"data");
+	INI_WriteFloat(File, "positionX", player_PosX[playerid]);
+    INI_WriteFloat(File, "positionY", player_PosY[playerid]);
+    INI_WriteFloat(File, "positionZ", player_PosZ[playerid]);
+    INI_Close(File);
+
+	SendRconCommand("gmx 1");
     return 1;
 }
 
