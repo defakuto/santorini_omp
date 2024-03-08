@@ -1141,3 +1141,14 @@ Loaded 22 component(s) from C:\Users\defak\OneDrive\Documents\GitHub\santorini_o
 [2024-03-08T21:35:05+0100] [Info] [join] defakuto has joined the server (0:127.0.0.1)
 [2024-03-08T21:35:05+0100] [Error] Array index out of bounds
 [2024-03-08T21:35:07+0100] [Warning] Invalid dialog ID -1 used.  Use `HidePlayerDialog()`.
+[2024-03-08T22:14:09+0100] [Info] 
+
+*** Streamer Plugin v2.9.5 by Incognito unloaded ***
+
+[2024-03-08T22:14:09+0100] [Info] 
+[2024-03-08T22:14:09+0100] [Info]  ===============================
+[2024-03-08T22:14:10+0100] [Info] 
+[2024-03-08T22:14:10+0100] [Info]     sscanf component unloaded.  
+[2024-03-08T22:14:10+0100] [Info] 
+[2024-03-08T22:14:10+0100] [Info]  ===============================
+[2024-03-08T22:14:10+0100] [Info] 

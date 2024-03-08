@@ -36,7 +36,7 @@ Done
 //* Simple Shoot Move
 //*
 
-**/
+*/
 
 //? Compiler Settings
 #pragma option -d3
@@ -56,7 +56,6 @@ Done
 #include <ysilib\YSI_Coding\y_timers>
 #include <ysilib\YSI_Visual\y_commands>
 #include <ysilib\YSI_Data\y_foreach>
-#include <ysilib\YSI_Data\y_iterate>
 #include <ysilib\YSI_Coding\y_va>
 //? Other Library
 #include <sscanf2>
