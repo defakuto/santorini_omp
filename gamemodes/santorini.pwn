@@ -60,4 +60,5 @@ main()
 
 #include "external/scripts/wanted.pwn"
 #include "external/scripts/racewar.pwn"
+#include "external/scripts/shootmove.pwn"
 #include "external/scripts/parrot.pwn"

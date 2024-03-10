@@ -60,17 +60,15 @@ YCMD:racewar(playerid, const string: params[], help)
 
     static fmt_string[100];
 
-    if (IsPlayerConnected(racerid))
+    if(IsPlayerConnected(racerid))
     {
-        format(fmt_string, sizeof(fmt_string), "Race started with player %d", racerid);
-        SendClientMessage(playerid, -1, fmt_string);
+        SendClientMessage(playerid, -1, "Race started with player %d", racerid);
 
         StartRace(playerid, racerid);
     }
     else
     {
-        format(fmt_string, sizeof(fmt_string), "Player %d is not connected.", racerid);
-        SendClientMessage(playerid, -1, fmt_string);
+        SendClientMessage(playerid, -1 "Player %d is not connected.", racerid);
     }
 
     return 1;

@@ -49,10 +49,8 @@ hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
                 SetVehicleParamsEx(veh, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
             }
 
-            new str[60];
-            format(str, sizeof(str),""color_server"Santorini // "color_white"Engine State : %s", (engine == VEHICLE_PARAMS_OFF) ? "on" : "off");
-            SendClientMessage(playerid, -1, str);
-
+            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Engine State : %s", (engine == VEHICLE_PARAMS_OFF) ? "on" : "off");
+            
             return true;
         }
         if(newkeys & KEY_YES)
@@ -81,9 +79,7 @@ hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
             {
                 SetVehicleParamsEx(veh, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
             }
-            new str[60];
-            format(str, sizeof(str),""color_server"Santorini // "color_white"Lights State : %s", (lights == VEHICLE_PARAMS_OFF) ? "on" : "off");
-            SendClientMessage(playerid, -1, str);
+            SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Lights State : %s", (lights == VEHICLE_PARAMS_OFF) ? "on" : "off");
 
             return true;
         }
