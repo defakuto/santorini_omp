@@ -42,7 +42,7 @@ We welcome contributions from the community to enhance and improve the Santorini
 
 If you're interested in contributing, please fork the repository, make your changes, and submit a pull request. We appreciate your support in making Santorini Open.MP Server the best it can be!
 
-### Changelog : Version 0.0.1 - [08.03.2024]
+### Version 0.0.2 - [10.3.2024]
 
 #### TODO :
 - **Score System:** Implemented scoring mechanism including gaining and losing score, tied to various in-game actions.
@@ -73,8 +73,7 @@ If you're interested in contributing, please fork the repository, make your chan
 - **Simple Wanted**
 - **Simple Racewars**
 - **Simple Shoot Move**
+- **Simple Parrot Pet**
 
-
-## The End
-
-**Let's embark on an epic adventure together in the vibrant world of Santorini!**
+#### Aditional :
+- **Moved from Standard to Modular**
