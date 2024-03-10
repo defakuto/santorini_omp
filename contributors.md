@@ -1,7 +1,7 @@
 ### Contributors for Santorini Open.MP
 
 1. **Coding Contributors:**
-   - @defakuto
+- [@defakuto](https://github.com/defakuto)
 
 2. **Mapping Contributors:**
 
@@ -12,4 +12,3 @@
 5. **Issues Contributors:**
 
 6. **Ideas Contributors:**
-
