@@ -12,29 +12,29 @@ TODO : Airstike (buy airstrike and activate with "Satchel Explosives" or "Camera
 TODO : Missions (create unicate missions for players to be fun...)
 
 Critical
-//! Last Position (when you been kicked on login, coordinate going to reset, also the skin...)
-//! Shoot Move (when you shoot, you get teleported ((can be stuck underground or in object)(works but not the whole idea), need to find a_math or write math for that and create to move it smooth)
-//! 
-//!
-//!
-//!
-//!
+// ! Last Position (when you been kicked on login, coordinate going to reset, also the skin...)
+// ! Shoot Move (when you shoot, you get teleported ((can be stuck underground or in object)(works but not the whole idea), need to find a_math or write math for that and create to move it smooth)
+// ! 
+// !
+// !
+// !
+// !
 
 Progress
-//? Advanced Register and Login (maybe textdraw if i find somebody to make it for free...)
-//? Advanced Staff (integration with discord or something, i dont have idea...)
-//? Advanced Wanted (more bribe points and more wanted points, completing arrest and economy)
-//? Advanced Racewars (more checkpoints, add rockets to cars, some additional stuff like flying combo or slowing cars in radius)
-//? Advanced Shoot Move (make it smooth and give amount of time how often can use it)
-//?
+// ? Advanced Register and Login (maybe textdraw if i find somebody to make it for free...)
+// ? Advanced Staff (integration with discord or something, i dont have idea...)
+// ? Advanced Wanted (more bribe points and more wanted points, completing arrest and economy)
+// ? Advanced Racewars (more checkpoints, add rockets to cars, some additional stuff like flying combo or slowing cars in radius)
+// ? Advanced Shoot Move (make it smooth and give amount of time how often can use it)
+// ?
 
 Done
-//* Simple Register and Login
-//* Simple Staff
-//* Simple Wanted
-//* Simple Racewars
-//* Simple Shoot Move
-//*
+// * Simple Register and Login
+// * Simple Staff
+// * Simple Wanted
+// * Simple Racewars
+// * Simple Shoot Move
+// *
 
 */
 
@@ -51,7 +51,7 @@ Done
 #include <open.mp>
 //? YSI Library
 #include <ysilib\YSI_Coding\y_hooks>
-#include <ysilib\YSI_Core\y_utils.inc>
+#include <ysilib\YSI_Core\y_utils>
 #include <ysilib\YSI_Storage\y_ini>
 #include <ysilib\YSI_Coding\y_timers>
 #include <ysilib\YSI_Visual\y_commands>
@@ -59,6 +59,7 @@ Done
 #include <ysilib\YSI_Coding\y_va>
 //? Other Library
 #include <sscanf2>
+#include <samp_bcrypt>
 #include <streamer>
 #include <mapfix>
 #include <easyDialog>
