@@ -58,8 +58,6 @@ YCMD:racewar(playerid, const string: params[], help)
 
     GetRandomCheckpoint(playerid);
 
-    static fmt_string[100];
-
     if(IsPlayerConnected(racerid))
     {
         SendClientMessage(playerid, -1, "Race started with player %d", racerid);
