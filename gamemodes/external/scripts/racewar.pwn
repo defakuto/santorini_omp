@@ -68,7 +68,7 @@ YCMD:racewar(playerid, const string: params[], help)
     }
     else
     {
-        SendClientMessage(playerid, -1 "Player %d is not connected.", racerid);
+        SendClientMessage(playerid, -1, "Player %d is not connected.", racerid);
     }
 
     return 1;
