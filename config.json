@@ -93,7 +93,7 @@
     },
     "password": "",
     "pawn": {
-        "legacy_plugins": ["bcrypt-samp", "streamer"],
+        "legacy_plugins": ["samp_bcrypt", "streamer"],
         "main_scripts": [
             "santorini 1"
         ],

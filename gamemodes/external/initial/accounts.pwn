@@ -2,8 +2,6 @@
 
 static stock const USER_PATH[64] = "/Users/%s.ini";
 
-const MAX_PASSWORD_LENGTH = 64;
-const MIN_PASSWORD_LENGTH = 6;
 const MAX_LOGIN_ATTEMPTS = 	3;
 
 enum
@@ -13,12 +11,10 @@ enum
 };
 
 static  
-    player_Password[MAX_PLAYERS][MAX_PASSWORD_LENGTH],
-    player_Sex[MAX_PLAYERS][2],
+    player_Password[MAX_PLAYERS][BCRYPT_HASH_LENGTH],
     player_Score[MAX_PLAYERS],
 	player_Skin[MAX_PLAYERS],
     player_Money[MAX_PLAYERS],
-    player_Ages[MAX_PLAYERS],
     player_LoginAttempts[MAX_PLAYERS];
 
 new 
@@ -29,7 +25,6 @@ new
 hook Account_Load(playerid, const string: name[], const string: value[])
 {
     INI_String("Password", player_Password[playerid]);
-	INI_String("Sex", player_Sex[playerid]);
 	INI_Int("Level", player_Score[playerid]);
 	INI_Int("Skin", player_Skin[playerid]);
 	INI_Int("Money", player_Money[playerid]);
@@ -118,58 +113,11 @@ Dialog: dialog_regpassword(playerid, response, listitem, string: inputtext[])
 	if (!response)
 		return Kick(playerid);
 
-	Dialog_Show(playerid, "dialog_regpassword", DIALOG_STYLE_INPUT,
-			"Register",
-			"%s, type your password: ",
-			"Ok", "Exit", ReturnPlayerName(playerid)
-		);
-
-	strcopy(player_Password[playerid], inputtext);
-
-	Dialog_Show(playerid, "dialog_regages", DIALOG_STYLE_INPUT,
-		"Age",
-		"What is your age: ",
-		"Ok", "Exit"
-	);
-
-	return 1;
-}
-
-Dialog: dialog_regages(const playerid, response, listitem, string: inputtext[])
-{
-	if (!response)
-		return Kick(playerid);
-
-	if (!(12 <= strval(inputtext) <= 50))
-		return Dialog_Show(playerid, "dialog_regages", DIALOG_STYLE_INPUT,
-			"Age",
-			"What is your age: ",
-			"Ok", "Exit"
-		);
-
-	player_Ages[playerid] = strval(inputtext);
-
-	Dialog_Show(playerid, "dialog_regsex", DIALOG_STYLE_LIST,
-	"Gender",
-	"Male\nFemale",
-	"Ok", "Exit"
-	);
-
-	return 1;
-}
-
-Dialog: dialog_regsex(const playerid, response, listitem, string: inputtext[])
-{
-	if (!response)
-		return Kick(playerid);
-
-	new tmp_int = listitem + 1;
+//	strcopy(player_Password[playerid], inputtext);
+	bcrypt_hash(playerid, "OnPlayerPasswordHash", inputtext, BCRYPT_COST);
 
 	new INI:File = INI_Open(Account_Path(playerid));
 	INI_SetTag(File,"data");
-	INI_WriteString(File, "Password", player_Password[playerid]);
-	INI_WriteString(File, "Sex", (tmp_int == 1 ? ("Male") : ("Female")));
-	INI_WriteInt(File, "Age", player_Ages[playerid]);
 	INI_WriteInt(File, "Level", 0);
 	INI_WriteInt(File, "Skin", 240);
 	INI_WriteInt(File, "Money", 1000);
@@ -179,30 +127,13 @@ Dialog: dialog_regsex(const playerid, response, listitem, string: inputtext[])
 	player_Skin[playerid] = 240;
 	player_Score[playerid] = 0;
 
-	defer Spawn_Player(playerid, 1);
-	
 	return 1;
 }
 
+
 Dialog: dialog_login(const playerid, response, listitem, string: inputtext[])
 {
-	if (!response)
-		return Kick(playerid);
-
-	if (!strcmp(player_Password[playerid], inputtext, false))
-		defer Spawn_Player(playerid, 2);
-	else
-	{
-		if (player_LoginAttempts[playerid] == MAX_LOGIN_ATTEMPTS)
-			return Kick(playerid);
-
-		++player_LoginAttempts[playerid];
-		Dialog_Show(playerid, "dialog_login", DIALOG_STYLE_PASSWORD,
-			"Login",
-			"%s, wrong password, try again: ",
-			"Ok", "Exit", ReturnPlayerName(playerid)
-		);
-	}
+	bcrypt_verify(playerid, "OnPlayerVerifyHash", inputtext, player_Password[playerid]);
 
 	return 1;
 }
@@ -213,4 +144,43 @@ Account_Path(const playerid)
 	format(tmp_fmt, sizeof(tmp_fmt), USER_PATH, ReturnPlayerName(playerid));
 
 	return tmp_fmt;
+}
+
+forward OnPlayerPasswordHash(playerid);
+public OnPlayerPasswordHash(playerid)
+{
+	new hash[BCRYPT_HASH_LENGTH];
+	bcrypt_get_hash(hash);
+
+    new INI:File = INI_Open(Account_Path(playerid));
+    INI_SetTag(File, "data");
+    INI_WriteString(File, "Password", hash);
+    INI_Close(File);
+
+    defer Spawn_Player(playerid, 1);
+
+    return 1;
+}
+
+forward OnPlayerVerifyHash(playerid, bool: success);
+public OnPlayerVerifyHash(playerid, bool: success)
+{
+	if(success)
+    {
+        defer Spawn_Player(playerid, 2);
+    }
+    else
+    {
+        if (player_LoginAttempts[playerid] == MAX_LOGIN_ATTEMPTS)
+            return Kick(playerid);
+
+        ++player_LoginAttempts[playerid];
+
+        Dialog_Show(playerid, "dialog_login", DIALOG_STYLE_PASSWORD,
+            "Login",
+            "%s, wrong password, try again: ",
+            "Ok", "Exit", ReturnPlayerName(playerid)
+        );
+    }
+    return 1;
 }

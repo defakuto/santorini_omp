@@ -39,6 +39,7 @@ Done
 
 Additional
 // ? Moved from Standard to Modular
+// ? Added bcyrpt hash protection for password
 
 */
 
