@@ -9,6 +9,7 @@
 #define CGEN_MEMORY 60000
 //? Main Library
 #include <open.mp>
+#include <bcrypt>
 //? YSI Library
 #include <ysilib\YSI_Coding\y_hooks>
 #include <ysilib\YSI_Core\y_utils>
@@ -19,7 +20,6 @@
 #include <ysilib\YSI_Coding\y_va>
 //? Other Library
 #include <sscanf2>
-#include <samp_bcrypt>
 #include <streamer>
 #include <mapfix>
 #include <easyDialog>
