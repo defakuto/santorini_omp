@@ -34,6 +34,12 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 	return 1;
 }
 
+hook OnGameModeExit()
+{
+
+	return 1;
+}
+
 hook OnPlayerConnect(playerid)
 {
 	if (fexist(Account_Path(playerid)))
@@ -82,8 +88,8 @@ timer Spawn_Player[100](playerid, type)
 		{
 			SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Welcome to the server!");
 			SetSpawnInfo(playerid, NO_TEAM, player_Skin[playerid],
-				-2117.0735, 2596.7383, 905.1039, 292.1759,
-				WEAPON_PARACHUTE, 10, WEAPON_SILENCED, 10, 	WEAPON_TEARGAS, 10
+				-2235.1609, 2430.5471, 83.7548, 218.0588,
+				WEAPON_FIST, 0, WEAPON_FIST, 0, 	WEAPON_FIST, 0
 			);
 			SpawnPlayer(playerid);
 
@@ -97,7 +103,7 @@ timer Spawn_Player[100](playerid, type)
 			SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Welcome to the server!");
 			SetSpawnInfo(playerid, 0, player_Skin[playerid],
 				player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid], 0,
-				WEAPON_PARACHUTE, 10, WEAPON_SILENCED, 10, 	WEAPON_TEARGAS, 10
+				WEAPON_FIST, 0, WEAPON_FIST, 0,	WEAPON_FIST, 0
 			);
 			SpawnPlayer(playerid);
 
@@ -113,7 +119,6 @@ Dialog: dialog_regpassword(playerid, response, listitem, string: inputtext[])
 	if (!response)
 		return Kick(playerid);
 
-//	strcopy(player_Password[playerid], inputtext);
 	bcrypt_hash(playerid, "OnPlayerPasswordHash", inputtext, BCRYPT_COST);
 
 	new INI:File = INI_Open(Account_Path(playerid));
