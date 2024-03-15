@@ -36,7 +36,7 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 
 hook OnPlayerConnect(playerid)
 {
-	if(fexist(Account_Path(playerid)))
+	if (fexist(Account_Path(playerid)))
 	{
 		INI_ParseFile(Account_Path(playerid), "Account_Load", true, true, playerid);
 		Dialog_Show(playerid, "dialog_login", DIALOG_STYLE_PASSWORD,
@@ -82,13 +82,14 @@ hook OnPlayerDeath(playerid, killerid, WEAPON:reason)
 		-2235.1609, 2430.5471, 83.7548, 218.0588,
 		WEAPON_FIST, 0, WEAPON_FIST, 0, WEAPON_FIST, 0
 	);
+	GivePlayerMoney(playerid, -1000);
 
 	return 1;
 }
 
 timer Spawn_Player[100](playerid, type)
 {
-	if(type == e_SPAWN_TYPE_REGISTER)
+	if (type == e_SPAWN_TYPE_REGISTER)
 		{
 			SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Welcome to the server!");
 			SetSpawnInfo(playerid, NO_TEAM, player_Skin[playerid],
@@ -103,7 +104,7 @@ timer Spawn_Player[100](playerid, type)
 			SetPlayerHealth(playerid, 80.0);
 		}
 
-		else if(type == e_SPAWN_TYPE_LOGIN)
+		else if (type == e_SPAWN_TYPE_LOGIN)
 		{
 			SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Welcome to the server!");
 			SetSpawnInfo(playerid, 0, player_Skin[playerid],
@@ -122,7 +123,7 @@ timer Spawn_Player[100](playerid, type)
 
 Dialog: dialog_regpassword(playerid, response, listitem, string: inputtext[])
 {
-	if(!response)
+	if (!response)
 		return Kick(playerid);
 
 	bcrypt_hash(playerid, "OnPlayerPasswordHash", inputtext, BCRYPT_COST);
@@ -176,13 +177,13 @@ public OnPlayerPasswordHash(playerid)
 forward OnPlayerVerifyHash(playerid, bool: success);
 public OnPlayerVerifyHash(playerid, bool: success)
 {
-	if(success)
+	if (success)
     {
         defer Spawn_Player(playerid, 2);
     }
     else
     {
-        if(player_LoginAttempts[playerid] == MAX_LOGIN_ATTEMPTS)
+        if (player_LoginAttempts[playerid] == MAX_LOGIN_ATTEMPTS)
             return Kick(playerid);
 
         ++player_LoginAttempts[playerid];

@@ -27,10 +27,9 @@ hook OnGameModeInit()
 
 hook OnPlayerSpawn(playerid)
 {
-	if(player_Wanted[playerid] != 0) 
+	if (player_Wanted[playerid] != 0) 
 	{
 	    SetPlayerWantedLevel(playerid, player_Wanted[playerid]);
-        PlayCrimeReportForPlayer(playerid, 0, 16);
 	}
 
 	return 1;
@@ -38,7 +37,7 @@ hook OnPlayerSpawn(playerid)
 
 hook OnPlayerUpdate(playerid)
 {
- 	if(!PlayerInRange[playerid] && IsPlayerInRangeOfPoint(playerid, 1.0, -1370.4532, 2052.9966, 52.5156))
+ 	if (!PlayerInRange[playerid] && IsPlayerInRangeOfPoint(playerid, 1.0, -1370.4532, 2052.9966, 52.5156))
     {
         PlayerInRange[playerid] = 1;
         
@@ -51,19 +50,18 @@ hook OnPlayerUpdate(playerid)
 
 hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, WEAPON:weaponid, bodypart)
 {
-	if(issuerid != INVALID_PLAYER_ID && bodypart == 9)
+	if (issuerid != INVALID_PLAYER_ID && bodypart == 9)
     {
         SetPlayerHealth(playerid, 0.0);
     }
 
-	if(player_Wanted[issuerid] == 6) return 1;
+	if (player_Wanted[issuerid] == 6) return 1;
     for(new i = 0; i < sizeof camera_Locations; i++) 
 	{
-        if(IsPlayerInRangeOfPoint(issuerid, 40.0, camera_Locations[i][0], camera_Locations[i][1], camera_Locations[i][2])) 
+        if (IsPlayerInRangeOfPoint(issuerid, 40.0, camera_Locations[i][0], camera_Locations[i][1], camera_Locations[i][2])) 
 		{
             player_Wanted[issuerid]++;
             SetPlayerWantedLevel(issuerid, player_Wanted[issuerid]);
-            PlayCrimeReportForPlayer(issuerid, 0, 16);
 
             new INI:File = INI_Open(Account_Path(issuerid));
             INI_SetTag(File,"data");
@@ -79,9 +77,9 @@ hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, WEAPON:weaponid, bodyp
 
 YCMD:bribe(playerid, const string: params[], help)
 {
-	if(IsPlayerInRangeOfPoint(playerid, 5.0, -1370.4532, 2052.9966, 52.5156))
+	if (IsPlayerInRangeOfPoint(playerid, 5.0, -1370.4532, 2052.9966, 52.5156))
 	{
-		if(player_Wanted[playerid] == 0)
+		if (player_Wanted[playerid] == 0)
 		{
 			SendClientMessage(playerid, -1, "You are in wrong place, pal.");
 		}

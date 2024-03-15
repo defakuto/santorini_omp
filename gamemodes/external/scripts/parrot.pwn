@@ -12,7 +12,7 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 
 hook OnPlayerConnect(playerid)
 {
-    if(player_Parrot[playerid] == 1)
+    if (player_Parrot[playerid] == 1)
     {
         SetPlayerAttachedObject(playerid, 1,19078,1,0.25,-0.04,0.15,0,0,0,1,1,1);
     }
@@ -22,7 +22,7 @@ hook OnPlayerConnect(playerid)
 
 hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
-    if(player_Parrot[playerid] == 1)
+    if (player_Parrot[playerid] == 1)
     {
         RemovePlayerAttachedObject(playerid, 1);
 

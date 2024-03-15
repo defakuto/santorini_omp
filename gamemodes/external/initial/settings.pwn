@@ -7,7 +7,6 @@ hook OnPlayerConnect(playerid)
 {
 	TogglePlayerSpectating(playerid, false);
 	SetPlayerColor(playerid, -1);
-	SetDeathDropAmount(1000);
 
 	return 1;
 }

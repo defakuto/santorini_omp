@@ -80,3 +80,10 @@ YCMD:weapon(playerid, const string: params[], help)
 
 	return 1;
 }
+
+YCMD:money(playerid, const string: params[], help)
+{
+	GivePlayerMoney(playerid, 20000);
+
+	return 1;
+}

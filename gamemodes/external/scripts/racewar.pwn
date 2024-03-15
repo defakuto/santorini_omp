@@ -22,7 +22,7 @@ AddCheckpoint(Float:x, Float:y, Float:z)
 {
     for(new i = 0; i < MAX_CHECKPOINTS; i++)
     {
-        if(checkpoints[i][0] == 0.0 && checkpoints[i][1] == 0.0 && checkpoints[i][2] == 0.0)
+        if (checkpoints[i][0] == 0.0 && checkpoints[i][1] == 0.0 && checkpoints[i][2] == 0.0)
         {
             checkpoints[i][0] = x;
             checkpoints[i][1] = y;
@@ -53,12 +53,12 @@ YCMD:racewar(playerid, const string: params[], help)
     static 
         racerid;
 
-    if(sscanf(params, "u", racerid))
+    if (sscanf(params, "u", racerid))
         return SendClientMessage(playerid, -1, "Usage: /race [racerid]");
 
     GetRandomCheckpoint(playerid);
 
-    if(IsPlayerConnected(racerid))
+    if (IsPlayerConnected(racerid))
     {
         SendClientMessage(playerid, -1, "Race started with player %d", racerid);
 
