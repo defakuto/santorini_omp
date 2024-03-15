@@ -4,7 +4,7 @@ new Text:p_SpeedoMeterTextdraw;
 
 hook OnGameModeInit()
 {
-    p_SpeedoMeterTextdraw = TextDrawCreate(123.968872, 421.417358, "0km/h");
+    p_SpeedoMeterTextdraw = TextDrawCreate(123.968872, 419.417358, "0km/h");
 	TextDrawLetterSize(p_SpeedoMeterTextdraw, 0.291303, 1.594166);
 	TextDrawAlignment(p_SpeedoMeterTextdraw, TEXT_DRAW_ALIGN_CENTER);
 	TextDrawColour(p_SpeedoMeterTextdraw, -1);

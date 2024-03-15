@@ -4,7 +4,7 @@
 #define DRIFT_MAX_ANGLE 90.0
 #define DRIFT_SPEED 30.0
 
-//#pragma unused GetPlayerTheoreticAngle
+#pragma unused GetPlayerTheoreticAngle
 new Float:gpps[20][3];
 enum Float:Pos{ Float:sX,Float:sY,Float:sZ };
 new Float:SavedPos[MAX_PLAYERS][Pos];
@@ -26,7 +26,7 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 
 hook OnGameModeInit()
 {
-    DriftTD = TextDrawCreate(183.968872, 421.417358, " ");
+    DriftTD = TextDrawCreate(123.968872, 431.417358, " ");
 	TextDrawLetterSize(DriftTD, 0.291303, 1.594166);
 	TextDrawAlignment(DriftTD, TEXT_DRAW_ALIGN_CENTER);
 	TextDrawColour(DriftTD, -1);

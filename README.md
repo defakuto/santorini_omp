@@ -68,9 +68,11 @@ If you're interested in contributing, please fork the repository, make your chan
 #### Done :
 - **Simple Register and Login**
 - **Simple Staff**
-- **Simple Wanted**
 - **Simple Racewars**
 - **Simple Parrot Pet**
+- **Advanced Wanted**
+- **Advanced Drift Meter**
+- **Speedometer**
 
 #### Aditional :
 - **Moved from Standard to Modular**
