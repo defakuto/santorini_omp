@@ -78,3 +78,7 @@ If you're interested in contributing, please fork the repository, make your chan
 #### Aditional :
 - **Moved from Standard to Modular**
 - **Added bcyrpt hash protection for password**
+
+#### Base :
+- **MYSQL Player Configuration Save**
+  
