@@ -34,16 +34,17 @@ Critical
 Progress
 // ? Advanced Register and Login (maybe textdraw if i find somebody to make it for free...)
 // ? Advanced Staff (integration with discord or something, i dont have idea...)
-// ? Advanced Wanted (more bribe points and more wanted points, completing arrest and economy)
 // ? Advanced Racewars (more checkpoints, add rockets to cars, some additional stuff like flying combo or slowing cars in radius)
 // ?
 
 Done
 // * Simple Register and Login
 // * Simple Staff
-// * Simple Wanted
 // * Simple Racewars
 // * Simple Parrot Pet
+// * Advanced Wanted
+// * Advanced Drift Meter
+// * Speedomter
 
 Additional
 // ? Moved from Standard to Modular
@@ -68,6 +69,7 @@ main()
 #include "external/initial/staffteam.pwn"
 #include "external/initial/vehicle.pwn"
 #include "external/initial/speedometer.pwn"
+#include "external/initial/driftmeter.pwn"
 
 #include "external/scripts/wanted.pwn"
 #include "external/scripts/racewar.pwn"
