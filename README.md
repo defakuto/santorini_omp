@@ -59,7 +59,7 @@ If you're interested in contributing, please fork the repository, make your chan
 
 #### Critical :
 - **Last Position:** Fixed issue where coordinates reset upon login after being kicked, including player skin.
-- **Shoot Move:** Addressed teleportation issue upon shooting, working towards smoother movement mechanics to prevent players from getting stuck underground or within objects.
+- **Silent Move:** Addressed teleportation issue upon shooting, working towards smoother movement mechanics to prevent players from getting stuck underground or within objects.
 
 #### Progress :
 - **Advanced Register and Login:** Working on implementing advanced registration and login system, potentially including textdraw if feasible.
@@ -72,7 +72,7 @@ If you're interested in contributing, please fork the repository, make your chan
 - **Simple Staff**
 - **Simple Wanted**
 - **Simple Racewars**
-- **Simple Shoot Move**
+- **Simple Silent Move**
 - **Simple Parrot Pet**
 
 #### Aditional :
