@@ -15,7 +15,7 @@ hook OnVehicleSpawn(vehicleid)
         SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, doors, bonnet, boot, objective);
     }
 
-	return 1;
+	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
 hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
@@ -85,7 +85,7 @@ hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
         }
     }
 
-	return 1;
+	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
 hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
@@ -109,7 +109,7 @@ hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
         }
 	}
 
-	return 1;
+	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
 IsVehicleBicycle(m)
@@ -117,13 +117,4 @@ IsVehicleBicycle(m)
     if (m == 481 || m == 509 || m == 510) return true;
     
     return false;
-}
-
-stock GetVehicleSpeed(vehicleid)
-{
-	new Float:xPos[3];
-
-	GetVehicleVelocity(vehicleid, xPos[0], xPos[1], xPos[2]);
-
-	return floatround(floatsqroot(xPos[0] * xPos[0] + xPos[1] * xPos[1] + xPos[2] * xPos[2]) * 170.00);
 }

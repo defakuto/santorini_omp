@@ -7,8 +7,7 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 {
 	INI_Int("Parrot", player_Parrot[playerid]);
 
-	return 1;
-}
+	return Y_HOOKS_CONTINUE_RETURN_1;}
 
 hook OnPlayerConnect(playerid)
 {
@@ -17,8 +16,7 @@ hook OnPlayerConnect(playerid)
         SetPlayerAttachedObject(playerid, 1,19078,1,0.25,-0.04,0.15,0,0,0,1,1,1);
     }
 
-	return 1;
-}
+	return Y_HOOKS_CONTINUE_RETURN_1;}
 
 hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
 {
@@ -33,7 +31,7 @@ hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
         INI_Close(File);
     }
 
-    return 1;
+	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
 YCMD:buyparrot(playerid, const string: params[], help)

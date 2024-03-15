@@ -15,7 +15,7 @@ hook OnGameModeInit()
     AddCheckpoint(-1296.5348, 2497.5652, 86.6384);
     AddCheckpoint(-1067.0332, 2196.3735, 87.4105);
 
-	return 1;
+	return Y_HOOKS_CONTINUE_RETURN_1;
 }
 
 AddCheckpoint(Float:x, Float:y, Float:z)

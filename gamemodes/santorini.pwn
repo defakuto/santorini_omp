@@ -67,6 +67,7 @@ main()
 #include "external/initial/accounts.pwn"
 #include "external/initial/staffteam.pwn"
 #include "external/initial/vehicle.pwn"
+#include "external/initial/speedometer.pwn"
 
 #include "external/scripts/wanted.pwn"
 #include "external/scripts/racewar.pwn"
