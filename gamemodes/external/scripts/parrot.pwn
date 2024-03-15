@@ -29,9 +29,8 @@ hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, weaponid, bodypart)
         player_Parrot[playerid] = 0;
 
         new INI:File = INI_Open(Account_Path(playerid));
-        INI_SetTag( File, "data" );
         INI_WriteInt(File, "Parrot", player_Parrot[playerid]);
-        INI_Close( File );
+        INI_Close(File);
     }
 
     return 1;
@@ -45,9 +44,8 @@ YCMD:buyparrot(playerid, const string: params[], help)
 	player_Parrot[playerid] = 1;
 
     new INI:File = INI_Open(Account_Path(playerid));
-	INI_SetTag( File, "data" );
     INI_WriteInt(File, "Parrot", player_Parrot[playerid]);
-	INI_Close( File );
+	INI_Close(File);
 
     return 1;
 }

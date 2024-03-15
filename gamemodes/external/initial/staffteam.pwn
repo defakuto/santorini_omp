@@ -323,7 +323,7 @@ YCMD:setskin(playerid, const string: params[], help)
     new INI:File = INI_Open(Account_Path(playerid));
 	INI_SetTag( File, "data" );
     INI_WriteInt(File, "Skin", GetPlayerSkin(playerid));
-	INI_Close( File );
+	INI_Close(File);
 
     return 1;
 }
@@ -395,7 +395,7 @@ YCMD:setstaff(playerid, const string: params[], help)
     new INI:File = INI_Open(Account_Path(playerid));
 	INI_SetTag( File, "data" );
     INI_WriteInt(File, "Staff", player_Staff[playerid]);
-	INI_Close( File );
+	INI_Close(File);
 	
     return 1;
 }
