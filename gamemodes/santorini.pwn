@@ -73,3 +73,10 @@ main()
 #include "external/scripts/parrot.pwn"
 
 #include "external/maps/bayside.pwn"
+
+YCMD:weapon(playerid, const string: params[], help)
+{
+	GivePlayerWeapon(playerid, WEAPON_M4, 100);
+
+	return 1;
+}

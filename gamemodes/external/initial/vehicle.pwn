@@ -6,7 +6,7 @@ hook OnVehicleSpawn(vehicleid)
 		bool:engine, bool:lights, bool:alarm, bool:doors, bool:bonnet, bool:boot, bool:objective;
 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 
-    if (IsVehicleBicycle(GetVehicleModel(vehicleid)))
+    if(IsVehicleBicycle(GetVehicleModel(vehicleid)))
     {
         SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_ON, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, doors, bonnet, boot, objective);
     }
@@ -79,7 +79,7 @@ hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
             {
                 SetVehicleParamsEx(veh, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
             }
-            SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Lights State : %s", (lights == VEHICLE_PARAMS_OFF) ? "on" : "off");
+            SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Lights State : "color_yellow"%s", (lights == VEHICLE_PARAMS_OFF) ? "ON" : "OFF");
 
             return true;
         }
@@ -101,7 +101,7 @@ hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
 
     GetVehicleParamsEx(veh, engine, lights, alarm, doors, bonnet, boot, objective);
 
-	if (newstate == PLAYER_STATE_DRIVER) 
+	if(newstate == PLAYER_STATE_DRIVER) 
     {
         if(engine == VEHICLE_PARAMS_OFF)
         {   
