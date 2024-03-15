@@ -4429,3 +4429,14 @@ Loaded 22 component(s) from C:\Users\defak\OneDrive\Documents\GitHub\santorini_o
 [2024-03-15T13:08:18+0100] [Warning] Invalid dialog ID -1 used.  Use `HidePlayerDialog()`.
 [2024-03-15T13:08:41+0100] [Warning] RCON (In-Game): Player #0 (defakuto) has logged in.
 [2024-03-15T13:09:19+0100] [Info] [part] defakuto has left the server (0:1)
+[2024-03-15T13:15:41+0100] [Info] 
+
+*** Streamer Plugin v2.9.5 by Incognito unloaded ***
+
+[2024-03-15T13:15:41+0100] [Info] 
+[2024-03-15T13:15:41+0100] [Info]  ===============================
+[2024-03-15T13:15:41+0100] [Info] 
+[2024-03-15T13:15:41+0100] [Info]     sscanf component unloaded.  
+[2024-03-15T13:15:41+0100] [Info] 
+[2024-03-15T13:15:41+0100] [Info]  ===============================
+[2024-03-15T13:15:41+0100] [Info] 
