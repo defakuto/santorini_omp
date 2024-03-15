@@ -43,7 +43,7 @@ hook OnGameModeInit()
 
 hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
 {
-	if(newstate == PLAYER_STATE_DRIVER) 
+	if (newstate == PLAYER_STATE_DRIVER) 
     {
 		TextDrawShowForPlayer(playerid, DriftTD);
     }
@@ -56,10 +56,10 @@ public AngleUpdate()
 {
     for(new g = 0; g < GetMaxPlayers(); g++) 
     {
-        if(IsPlayerConnected(g))
+        if (IsPlayerConnected(g))
         {
             new Float:x, Float:y, Float:z;
-            if(IsPlayerInAnyVehicle(g))
+            if (IsPlayerInAnyVehicle(g))
                 GetVehiclePos(GetPlayerVehicleID(g), x, y, z);
             else
                 GetPlayerPos(g, x, y, z);
@@ -80,12 +80,12 @@ Float:GetPlayerTheoreticAngle(i)
     new Float:tmp3;
     new Float:tmp4;
     new Float:MindAngle;
-    if(IsPlayerConnected(i)) 
+    if (IsPlayerConnected(i)) 
     {
         GetPlayerPos(i,x,y,z);
         dis = floatsqroot(floatpower(floatabs(floatsub(x,gpps[i][0])),2)+floatpower(floatabs(floatsub(y,gpps[i][1])),2));
-        if(IsPlayerInAnyVehicle(i))GetVehicleZAngle(GetPlayerVehicleID(i), angle2); else GetPlayerFacingAngle(i, angle2);
-        if(x>gpps[i][0]) 
+        if (IsPlayerInAnyVehicle(i))GetVehicleZAngle(GetPlayerVehicleID(i), angle2); else GetPlayerFacingAngle(i, angle2);
+        if (x>gpps[i][0]) 
         {
             tmp3=x-gpps[i][0];
         }
@@ -93,7 +93,7 @@ Float:GetPlayerTheoreticAngle(i)
         {
             tmp3=gpps[i][0]-x;
         }
-        if(y>gpps[i][1]) 
+        if (y>gpps[i][1]) 
         {
             tmp4=y-gpps[i][1];
         }
@@ -101,28 +101,28 @@ Float:GetPlayerTheoreticAngle(i)
         {
             tmp4=gpps[i][1]-y;
         }
-        if(gpps[i][1]>y && gpps[i][0]>x) 
+        if (gpps[i][1]>y && gpps[i][0]>x) 
         {        //1
             sin = asin(tmp3/dis);
             MindAngle = floatsub(floatsub(floatadd(sin, 90), floatmul(sin, 2)), -90.0);
         }
-        if(gpps[i][1]<y && gpps[i][0]>x) 
+        if (gpps[i][1]<y && gpps[i][0]>x) 
         {        //2
             sin = asin(tmp3/dis);
             MindAngle = floatsub(floatadd(sin, 180), 180.0);
         }
-        if(gpps[i][1]<y && gpps[i][0]<x) 
+        if (gpps[i][1]<y && gpps[i][0]<x) 
         {        //3
             sin = acos(tmp4/dis);
             MindAngle = floatsub(floatadd(sin, 360), floatmul(sin, 2));
         }
-        if(gpps[i][1]>y && gpps[i][0]<x) 
+        if (gpps[i][1]>y && gpps[i][0]<x) 
         {        //4
             sin = asin(tmp3/dis);
             MindAngle = floatadd(sin, 180);
         }
     }
-    if(MindAngle == 0.0) 
+    if (MindAngle == 0.0) 
     {
         return angle2;
     } 
@@ -151,7 +151,7 @@ public DriftSummary(playerid)
 Float:ReturnPlayerAngle(playerid)
 {
     new Float:Ang;
-    if(IsPlayerInAnyVehicle(playerid))GetVehicleZAngle(GetPlayerVehicleID(playerid), Ang); else GetPlayerFacingAngle(playerid, Ang);
+    if (IsPlayerInAnyVehicle(playerid))GetVehicleZAngle(GetPlayerVehicleID(playerid), Ang); else GetPlayerFacingAngle(playerid, Ang);
 
     return Ang;
 }
@@ -171,14 +171,14 @@ public DriftCount()
         Angle1 = ReturnPlayerAngle(g);
         Angle2 = GetPlayerTheoreticAngle(g);
         BySpeed = floatmul(SpeedX, 12);
-        if(GetPlayerState(g) == PLAYER_STATE_DRIVER && GetPlayerVehicleID(g) && floatabs(floatsub(Angle1, Angle2)) > DRIFT_MIN_ANGLE && floatabs(floatsub(Angle1, Angle2)) < DRIFT_MAX_ANGLE && BySpeed > DRIFT_SPEED) 
+        if (GetPlayerState(g) == PLAYER_STATE_DRIVER && GetPlayerVehicleID(g) && floatabs(floatsub(Angle1, Angle2)) > DRIFT_MIN_ANGLE && floatabs(floatsub(Angle1, Angle2)) < DRIFT_MAX_ANGLE && BySpeed > DRIFT_SPEED) 
         {
-            if(PlayerDriftPoints[g] > 0)KillTimer(PlayerDriftPoints[g]);
+            if (PlayerDriftPoints[g] > 0)KillTimer(PlayerDriftPoints[g]);
             PlayerDriftPoints[g] = 0;
             DriftPointsNow[g] += floatval( floatabs(floatsub(Angle1, Angle2)) * 3 * (BySpeed*0.1) )/800;
             PlayerDriftPoints[g] = SetTimerEx("DriftSummary", 3000, false, "d", g);
         }
-        if(DriftPointsNow[g] > 0) 
+        if (DriftPointsNow[g] > 0) 
         {
             format(s, sizeof(s), "%d Drift Points", DriftPointsNow);
             TextDrawSetString(DriftTD, s);
@@ -208,7 +208,7 @@ hook OnPlayerConnect(playerid)
 
 hook OnPlayerUpdate(playerid)
 {
-    if(!IsPlayerInAnyVehicle(playerid))
+    if (!IsPlayerInAnyVehicle(playerid))
 	{
  		TextDrawHideForPlayer(playerid, DriftTD);
 	}
