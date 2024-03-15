@@ -42,7 +42,7 @@ We welcome contributions from the community to enhance and improve the Santorini
 
 If you're interested in contributing, please fork the repository, make your changes, and submit a pull request. We appreciate your support in making Santorini Open.MP Server the best it can be!
 
-### Version 0.0.2 - [14.03.2024]
+### Version 0.0.3 - [15.03.2024]
 
 #### TODO :
 - **Score System:** Implemented scoring mechanism including gaining and losing score, tied to various in-game actions.
@@ -58,8 +58,6 @@ If you're interested in contributing, please fork the repository, make your chan
 - **Missions:** Implemented unique missions for players to undertake, enhancing gameplay variety and engagement.
 
 #### Critical :
-- **Last Position:** Fixed issue where coordinates reset upon login after being kicked, including player skin.
-- **Silent Move:** Addressed teleportation issue upon shooting, working towards smoother movement mechanics to prevent players from getting stuck underground or within objects.
 
 #### Progress :
 - **Advanced Register and Login:** Working on implementing advanced registration and login system, potentially including textdraw if feasible.
@@ -72,7 +70,6 @@ If you're interested in contributing, please fork the repository, make your chan
 - **Simple Staff**
 - **Simple Wanted**
 - **Simple Racewars**
-- **Simple Silent Move**
 - **Simple Parrot Pet**
 
 #### Aditional :

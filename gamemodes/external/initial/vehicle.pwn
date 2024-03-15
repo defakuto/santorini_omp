@@ -49,7 +49,7 @@ hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
                 SetVehicleParamsEx(veh, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
             }
 
-            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Engine State : %s", (engine == VEHICLE_PARAMS_OFF) ? "on" : "off");
+            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Engine State : "color_yellow"%s", (engine == VEHICLE_PARAMS_OFF) ? "ON" : "OFF");
             
             return true;
         }

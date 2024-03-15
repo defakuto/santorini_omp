@@ -99,7 +99,8 @@ YCMD:sc(playerid, const string: params[], help)
 
 	foreach (new i: Player)
 		if (player_Staff[i])
-			SendClientMessage(playerid, -1, "SC // %s(%d): "color_white"%s", ReturnPlayerName(playerid), playerid, params);
+			SendClientMessage(i, -1, "SC // %s(%d): "color_white"%s", ReturnPlayerName(playerid), playerid, params);
+
     return 1;
 }
 
@@ -259,7 +260,7 @@ YCMD:gethere(playerid, const params[], help)
 
 	GetPlayerName(playerid, name, sizeof(name));
 
-	SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Staff %s teleported you to him.", name);
+	SendClientMessage(targetid, -1, ""color_server"Santorini // "color_white"Staff %s teleported you to him.", name);
 
     return 1;
 }
