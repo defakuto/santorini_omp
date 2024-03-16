@@ -23,7 +23,7 @@
         "allow_interior_weapons": true,
         "chat_radius": 200.0,
         "death_drop_amount": 1000,
-        "gravity": 0.012,
+        "gravity": 0.010,
         "group_player_objects": false,
         "lag_compensation_mode": 1,
         "map": "Santorini",
