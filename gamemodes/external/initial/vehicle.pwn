@@ -15,7 +15,7 @@ hook OnVehicleSpawn(vehicleid)
         SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, doors, bonnet, boot, objective);
     }
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
@@ -85,7 +85,7 @@ hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
         }
     }
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
@@ -109,7 +109,7 @@ hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
         }
 	}
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 IsVehicleBicycle(m)

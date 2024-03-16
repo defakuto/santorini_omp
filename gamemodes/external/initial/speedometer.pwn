@@ -13,7 +13,7 @@ hook OnGameModeInit()
 	TextDrawFont(p_SpeedoMeterTextdraw, TEXT_DRAW_FONT_1);
 	TextDrawSetProportional(p_SpeedoMeterTextdraw, true);
 
-    return Y_HOOKS_CONTINUE_RETURN_1;
+    return 1;
 }
 
 hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
@@ -23,7 +23,7 @@ hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
 		TextDrawShowForPlayer(playerid, p_SpeedoMeterTextdraw);
     }
 
-    return Y_HOOKS_CONTINUE_RETURN_1;
+    return 1;
 }
 
 hook OnPlayerUpdate(playerid)
@@ -48,7 +48,7 @@ hook OnPlayerUpdate(playerid)
  		TextDrawHideForPlayer(playerid, p_SpeedoMeterTextdraw);
 	}
 
-    return Y_HOOKS_CONTINUE_RETURN_1;
+    return 1;
 }
 
 stock GetVehicleSpeed(vehicleid)

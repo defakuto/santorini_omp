@@ -21,7 +21,7 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 {
     INI_Int("Money", player_Money[playerid]);
 
-    return Y_HOOKS_CONTINUE_RETURN_1;
+    return 1;
 }
 
 hook OnGameModeInit()
@@ -38,7 +38,7 @@ hook OnGameModeInit()
     SetTimer("AngleUpdate" , 700, true);
     SetTimer("DriftCount", 500, true);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
@@ -48,7 +48,7 @@ hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
 		TextDrawShowForPlayer(playerid, DriftTD);
     }
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 forward AngleUpdate();
@@ -203,7 +203,7 @@ hook OnPlayerConnect(playerid)
 {
     TextDrawHideForPlayer(playerid, DriftTD);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerUpdate(playerid)
@@ -213,5 +213,5 @@ hook OnPlayerUpdate(playerid)
  		TextDrawHideForPlayer(playerid, DriftTD);
 	}
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }

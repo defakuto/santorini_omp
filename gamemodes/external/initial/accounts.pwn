@@ -32,7 +32,7 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 	INI_Float("positionY", player_PosY[playerid]);
 	INI_Float("positionZ", player_PosZ[playerid]);
 	
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerConnect(playerid)
@@ -57,7 +57,7 @@ hook OnPlayerConnect(playerid)
 
 	SetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerDisconnect(playerid, reason)
@@ -74,7 +74,7 @@ hook OnPlayerDisconnect(playerid, reason)
     INI_WriteFloat(File, "positionZ", player_PosZ[playerid]);
     INI_Close(File);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerDeath(playerid, killerid, WEAPON:reason)
@@ -85,7 +85,7 @@ hook OnPlayerDeath(playerid, killerid, WEAPON:reason)
 	);
 	GivePlayerMoney(playerid, -1000);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 timer Spawn_Player[100](playerid, type)

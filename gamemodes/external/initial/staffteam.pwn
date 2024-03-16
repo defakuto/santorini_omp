@@ -8,7 +8,7 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 {
 	INI_Int("Staff", player_Staff[playerid]);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 new stfveh[MAX_PLAYERS] = { INVALID_VEHICLE_ID, ... };
@@ -17,7 +17,7 @@ hook OnPlayerConnect(playerid)
 {
 	stfveh[playerid] = INVALID_VEHICLE_ID;
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerDisconnect(playerid, reason)
@@ -30,7 +30,7 @@ hook OnPlayerDisconnect(playerid, reason)
 	DestroyVehicle(stfveh[playerid]);
 	stfveh[playerid] = INVALID_PLAYER_ID;
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerDeath(playerid, killerid, WEAPON:reason)
@@ -38,7 +38,7 @@ hook OnPlayerDeath(playerid, killerid, WEAPON:reason)
 	DestroyVehicle(stfveh[playerid]);
 	stfveh[playerid] = INVALID_PLAYER_ID;
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 YCMD:help(playerid, params[], help)

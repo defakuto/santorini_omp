@@ -22,7 +22,7 @@ hook OnGameModeInit()
 {
 	actor_Bribe = CreateActor(217, -1370.4532, 2052.9966, 52.5156, 106.4529);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerSpawn(playerid)
@@ -32,7 +32,7 @@ hook OnPlayerSpawn(playerid)
 	    SetPlayerWantedLevel(playerid, player_Wanted[playerid]);
 	}
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerUpdate(playerid)
@@ -45,7 +45,7 @@ hook OnPlayerUpdate(playerid)
         SendClientMessage(playerid, -1, "Shh. - if you want to get your wanted record free, get me $5000. "color_yellow"/bribe");
     }
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, WEAPON:weaponid, bodypart)
@@ -55,7 +55,7 @@ hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, WEAPON:weaponid, bodyp
         SetPlayerHealth(playerid, 0.0);
     }
 
-	if (player_Wanted[issuerid] == 6) return Y_HOOKS_CONTINUE_RETURN_1;
+	if (player_Wanted[issuerid] == 6) return 1;
     for(new i = 0; i < sizeof camera_Locations; i++) 
 	{
         if (IsPlayerInRangeOfPoint(issuerid, 40.0, camera_Locations[i][0], camera_Locations[i][1], camera_Locations[i][2])) 
@@ -72,7 +72,7 @@ hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, WEAPON:weaponid, bodyp
         }
     }
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 YCMD:bribe(playerid, const string: params[], help)

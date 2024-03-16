@@ -14,7 +14,7 @@ hook OnGameModeInit()
 	CreateDynamicObject(3675, -2383.66235, 2369.92212, 3.29690,   -90.00000, 90.00000, 222.00000);
 	CreateDynamicObject(843, -2376.72754, 2397.39258, 7.96500,   0.00000, 0.00000, 62.00000);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 hook OnPlayerConnect(playerid)
@@ -32,5 +32,5 @@ hook OnPlayerConnect(playerid)
     //construction
     RemoveBuildingForPlayer(playerid, 715, -2360.0469, 2372.2266, 12.1328, 0.25);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }

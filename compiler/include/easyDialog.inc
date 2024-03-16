@@ -71,5 +71,5 @@ hook OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	 		CallLocalFunction(string, "ddds", playerid, response, listitem, (!inputtext[0]) ? ("\1") : (inputtext));
 	}
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }

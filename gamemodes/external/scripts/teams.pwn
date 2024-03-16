@@ -12,7 +12,7 @@ hook Account_Load(playerid, const string: name[], const string: value[])
 {
 	INI_Int("Team", player_Team[playerid]);
 
-	return Y_HOOKS_CONTINUE_RETURN_1;
+	return 1;
 }
 
 YCMD:jointeam(playerid, params[],help)
