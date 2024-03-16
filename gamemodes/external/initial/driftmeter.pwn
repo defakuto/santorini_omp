@@ -41,6 +41,23 @@ hook OnGameModeInit()
 	return 1;
 }
 
+hook OnPlayerConnect(playerid)
+{
+    TextDrawHideForPlayer(playerid, DriftTD);
+
+	return 1;
+}
+
+hook OnPlayerUpdate(playerid)
+{
+    if (!IsPlayerInAnyVehicle(playerid))
+	{
+ 		TextDrawHideForPlayer(playerid, DriftTD);
+	}
+
+	return 1;
+}
+
 hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
 {
 	if (newstate == PLAYER_STATE_DRIVER) 
@@ -198,20 +215,3 @@ todec(const str[])
 {
     return strval(str);
 } 
-
-hook OnPlayerConnect(playerid)
-{
-    TextDrawHideForPlayer(playerid, DriftTD);
-
-	return 1;
-}
-
-hook OnPlayerUpdate(playerid)
-{
-    if (!IsPlayerInAnyVehicle(playerid))
-	{
- 		TextDrawHideForPlayer(playerid, DriftTD);
-	}
-
-	return 1;
-}
