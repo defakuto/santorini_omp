@@ -72,7 +72,7 @@ If you're interested in contributing, please fork the repository, make your chan
     - This script allows players to initiate races with other players in the game.
 
 - Parrot System
-    - This script allows players to buy and attach a parrot object to their characters in the game. T
+    - This script allows players to buy and attach a parrot object to their characters in the game.
 
 - Emergency System
     - This script implements a blinkers feature for vehicles in the game. Players can activate or deactivate blinkers for their vehicles using a command.
