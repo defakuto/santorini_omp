@@ -94,6 +94,7 @@ YCMD:bribe(playerid, const string: params[], help)
 	}
 
     new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag( File, "data" );
     INI_WriteInt(File, "Wanted", player_Wanted[playerid]);
     INI_Close(File);
 

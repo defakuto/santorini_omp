@@ -23,6 +23,7 @@ hook OnPlayerConnect(playerid)
 hook OnPlayerDisconnect(playerid, reason)
 {
 	new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag( File, "data" );
 	INI_WriteInt(File, "Staff", player_Staff[playerid]);
     INI_Close(File);
 
@@ -142,13 +143,13 @@ YCMD:sveh(playerid, params[], help)
 	    {
 	        SetVehicleParamsEx(vehicleid, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, VEHICLE_PARAMS_OFF, doors, bonnet, boot, objective);
 	    }
-		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You created a vehicle, to destroy type '/sveh'.");
+		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You created a vehicle, to destroy type "color_server"'/sveh'.");
 	}
 	else 
 	{
 		DestroyVehicle(stfveh[playerid]);
 		stfveh[playerid] = INVALID_PLAYER_ID;
-		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You destroy a vehicle, to create type '/veh [Model ID]'.");
+		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You destroy a vehicle, to create type "color_server"'/sveh'.");
 	}
 	
     return 1;
@@ -241,7 +242,7 @@ YCMD:gethere(playerid, const params[], help)
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/gethere [id]");
 
 	if (targetid == INVALID_PLAYER_ID) 
-		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That ID is not connected.");
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That "color_server"ID "color_white"is not connected.");
 
 	new Float:x, Float:y, Float:z;
 
@@ -256,11 +257,11 @@ YCMD:gethere(playerid, const params[], help)
 	new name[MAX_PLAYER_NAME];
 	GetPlayerName(targetid, name, sizeof(name));
 
-	SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You teleported player %s to you.", name);
+	SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You teleported player "color_server"%s "color_white"to you.", name);
 
 	GetPlayerName(playerid, name, sizeof(name));
 
-	SendClientMessage(targetid, -1, ""color_server"Santorini // "color_white"Staff %s teleported you to him.", name);
+	SendClientMessage(targetid, -1, ""color_server"Santorini // "color_white"Staff "color_server"%s "color_white"teleported you to him.", name);
 
     return 1;
 }
@@ -351,7 +352,7 @@ YCMD:xgoto(playerid, params[], help)
 		{
 		    SetPlayerPos(playerid, x, y, z);
 		}
-		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You set coordinate to %f, %f, %f", x, y, z);
+		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You set coordinate to "color_server"%f, %f, %f", x, y, z);
 	}
  	return 1;
 }
@@ -359,7 +360,7 @@ YCMD:xgoto(playerid, params[], help)
 YCMD:setstaff(playerid, const string: params[], help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"0 - Revoke Staff | 1. Assistent | 2. Admin | 3. Manager | 4. High Command.");
+        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_server"0 - Revoke Staff | 1. Assistent | 2. Admin | 3. Manager | 4. High Command.");
 
 	if (!IsPlayerAdmin(playerid))
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You Must Be RCON!");
@@ -372,25 +373,25 @@ YCMD:setstaff(playerid, const string: params[], help)
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/setstaff [targetid] [0/1]");
 
 	if (!level && !player_Staff[targetid])
-		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That player is not a part of Staff Team.");
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That player is not a part of "color_server"Staff Team.");
 
 	if (level == player_Staff[targetid])
-		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That player is alredy part of Staff Team.");
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"That player is alredy part of "color_server"Staff Team.");
 
 	player_Staff[targetid] = level;
 	
 	if (!level)
 	{
-		SendClientMessage(targetid, -1, ""color_server"Santorini // "color_white"%s demote you from Staff Team.", ReturnPlayerName(playerid));
+		SendClientMessage(targetid, -1, ""color_server"Santorini // "color_server"%s "color_white"demote you from Staff Team.", ReturnPlayerName(playerid));
 
-		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You demote %s from Staff Team.", ReturnPlayerName(targetid));
+		SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You demote "color_server"%s "color_white"from Staff Team.", ReturnPlayerName(targetid));
 	}
-	else if (level < 0 || level > 4) return SendClientMessage(playerid, -1, ""color_white"Santorini // "color_white"Please use "color_blue"-/help setstaff- "color_white"to see all staff levels.");
+	else if (level < 0 || level > 4) return SendClientMessage(playerid, -1, ""color_white"Santorini // "color_white"Please use "color_server"-/help setstaff- "color_white"to see all staff levels.");
 	{
 
-		SendClientMessage(targetid, -1, ""color_server"Santorini // "color_white"%s promote you to Staff Team.", ReturnPlayerName(playerid));
+		SendClientMessage(targetid, -1, ""color_server"Santorini // "color_server"%s "color_white"promote you to Staff Team.", ReturnPlayerName(playerid));
 
-		SendClientMessage(targetid, -1, ""color_server"Santorini // "color_white"You promoted %s to Staff Team.", ReturnPlayerName(targetid));
+		SendClientMessage(targetid, -1, ""color_server"Santorini // "color_white"You promoted "color_server"%s "color_white"to Staff Team.", ReturnPlayerName(targetid));
 	}
 
     new INI:File = INI_Open(Account_Path(playerid));
@@ -415,9 +416,9 @@ YCMD:kick(playerid, params[],help)
 	if (sscanf(params, "ri", targetid))
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"/kick [targetid]");
 
-	SendClientMessage(targetid, -1, ""color_server"Santorini // "color_white"%s kick you from the server.", ReturnPlayerName(playerid));
+	SendClientMessage(targetid, -1, ""color_server"Santorini // "color_server"%s "color_white"kick you from the server.", ReturnPlayerName(playerid));
 
-	SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You kick %s from server.", ReturnPlayerName(targetid));
+	SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You kick "color_server"%s "color_white"from server.", ReturnPlayerName(targetid));
 
 	SetTimerEx("DelayedKick", 1000, false, "i", targetid);
 
@@ -429,6 +430,7 @@ YCMD:restart(playerid, const string: params[], help)
 	GetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
 
 	new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag( File, "data" );
 	INI_WriteFloat(File, "positionX", player_PosX[playerid]);
     INI_WriteFloat(File, "positionY", player_PosY[playerid]);
     INI_WriteFloat(File, "positionZ", player_PosZ[playerid]);

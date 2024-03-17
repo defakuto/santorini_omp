@@ -49,7 +49,7 @@ hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
                 SetVehicleParamsEx(veh, VEHICLE_PARAMS_OFF, lights, alarm, doors, bonnet, boot, objective);
             }
 
-            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Engine State : "color_yellow"%s", (engine == VEHICLE_PARAMS_OFF) ? "ON" : "OFF");
+            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Engine State : "color_server"%s", (engine == VEHICLE_PARAMS_OFF) ? "ON" : "OFF");
             
             return true;
         }
@@ -79,7 +79,7 @@ hook OnPlayerKeyStateChange(playerid, KEY:newkeys, KEY:oldkeys)
             {
                 SetVehicleParamsEx(veh, engine, VEHICLE_PARAMS_OFF, alarm, doors, bonnet, boot, objective);
             }
-            SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Lights State : "color_yellow"%s", (lights == VEHICLE_PARAMS_OFF) ? "ON" : "OFF");
+            SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Lights State : "color_server"%s", (lights == VEHICLE_PARAMS_OFF) ? "ON" : "OFF");
 
             return true;
         }
@@ -105,7 +105,7 @@ hook OnPlayerStateChange(playerid, PLAYER_STATE:newstate, PLAYER_STATE:oldstate)
     {
         if (engine == VEHICLE_PARAMS_OFF)
         {   
-            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"To start engine press 'N'");
+            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"To start engine press "color_server"'N'");
         }
 	}
 

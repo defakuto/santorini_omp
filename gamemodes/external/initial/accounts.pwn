@@ -15,7 +15,8 @@ static
     player_Score[MAX_PLAYERS],
 	player_Skin[MAX_PLAYERS],
     player_Money[MAX_PLAYERS],
-    player_LoginAttempts[MAX_PLAYERS];
+    player_LoginAttempts[MAX_PLAYERS],
+	player_Team[MAX_PLAYERS];
 
 new 
     Float:player_PosX[MAX_PLAYERS],
@@ -56,6 +57,7 @@ hook OnPlayerConnect(playerid)
 	);
 
 	SetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
+	SetPlayerTeam(playerid, player_Team[playerid]);
 
 	return 1;
 }
@@ -65,6 +67,7 @@ hook OnPlayerDisconnect(playerid, reason)
 	GetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
 
 	new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag( File, "data" );
     INI_WriteInt(File, "Level",GetPlayerScore(playerid));
     INI_WriteInt(File, "Skin",GetPlayerSkin(playerid));
     INI_WriteInt(File, "Money", GetPlayerMoney(playerid));
@@ -78,7 +81,7 @@ hook OnPlayerDisconnect(playerid, reason)
 
 hook OnPlayerDeath(playerid, killerid, WEAPON:reason)
 {
-	SetSpawnInfo(playerid, NO_TEAM, player_Skin[playerid],
+	SetSpawnInfo(playerid, player_Team[playerid], player_Skin[playerid],
 		-2235.1609, 2430.5471, 83.7548, 218.0588,
 		WEAPON_FIST, 0, WEAPON_FIST, 0, WEAPON_FIST, 0
 	);
@@ -92,7 +95,7 @@ timer Spawn_Player[100](playerid, type)
 	if (type == e_SPAWN_TYPE_REGISTER)
 		{
 			SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"Welcome to the server!");
-			SetSpawnInfo(playerid, NO_TEAM, player_Skin[playerid],
+			SetSpawnInfo(playerid, 255, player_Skin[playerid],
 				-2235.1609, 2430.5471, 83.7548, 218.0588,
 				WEAPON_FIST, 0, WEAPON_FIST, 0, WEAPON_FIST, 0
 			);
@@ -102,12 +105,13 @@ timer Spawn_Player[100](playerid, type)
 			GivePlayerMoney(playerid, player_Money[playerid]);
 			SetPlayerSkin(playerid, player_Skin[playerid]);
 			SetPlayerHealth(playerid, 80.0);
+			SetPlayerTeam(playerid, 255);
 		}
 
 		else if (type == e_SPAWN_TYPE_LOGIN)
 		{
 			SendClientMessage(playerid, -1,""color_server"Santorini // "color_white"Welcome to the server!");
-			SetSpawnInfo(playerid, 0, player_Skin[playerid],
+			SetSpawnInfo(playerid, player_Team[playerid], player_Skin[playerid],
 				player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid], 0,
 				WEAPON_FIST, 0, WEAPON_FIST, 0,	WEAPON_FIST, 0
 			);
@@ -129,9 +133,11 @@ Dialog: dialog_regpassword(playerid, response, listitem, string: inputtext[])
 	bcrypt_hash(playerid, "OnPlayerPasswordHash", inputtext, BCRYPT_COST);
 
 	new INI:File = INI_Open(Account_Path(playerid));
+	INI_SetTag( File, "data" );
 	INI_WriteInt(File, "Level", 0);
 	INI_WriteInt(File, "Skin", 240);
 	INI_WriteInt(File, "Money", 1000);
+	INI_WriteInt(File, "Team", 255);
 	INI_Close(File);
 
 	player_Money[playerid] = 1000;

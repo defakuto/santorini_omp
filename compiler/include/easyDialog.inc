@@ -5,7 +5,8 @@
 	; Updated by Emmett (deksy) 2021-04-29 - code cleanup
 	; Updated by Emmett (deksy) 2022-02-08 - code cleanup; used y_va instead of normal string formatting
 	; Updated by Emmett (deksy) 2022-02-12 - now using y_hooks instead of als and new macro added
-	; Updated by Defakuto 2024-03-24 - warning issue of : style to : DIALOG_STYLE:style
+	; Updated by Defakuto 2024-03-17 - warning issue of : style to : DIALOG_STYLE:style
+	; Updated by Defakuto 2024-03-17 - warning issue of : [Warning] Invalid dialog ID -1 used.  Use `HidePlayerDialog()`. Credits : 0xzeed on Discord.
 */
 
 #if defined _INC_easy_dialog_inc
@@ -30,8 +31,8 @@ forward OnDialogPerformed(playerid, const dialog[], response, success);
 // Functions
 stock Dialog_Close(const playerid)
 {
-	dialog_Name[playerid]{0} = 0;
-	return ShowPlayerDialog(playerid, -1, DIALOG_STYLE_MSGBOX, " ", " ", " ", "");
+    dialog_Name[playerid]{0} = 0;
+    return HidePlayerDialog(playerid);
 }
 
 stock Dialog_Open(const playerid, const function[], style, const caption[], const info[], const button1[], const button2[] = "", va_args<>)

@@ -42,7 +42,7 @@ We welcome contributions from the community to enhance and improve the Santorini
 
 If you're interested in contributing, please fork the repository, make your changes, and submit a pull request. We appreciate your support in making Santorini Open.MP Server the best it can be!
 
-## Version 0.0.6
+## Version 0.0.8
 
 - Register and Login System
     - The system manages player registration, login, and account data storage using bcrypt for password hashing.

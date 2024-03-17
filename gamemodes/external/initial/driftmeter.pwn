@@ -15,11 +15,11 @@ new PlayerDriftPoints[200];
 new Text:DriftTD;
 
 static
-    player_Money[MAX_PLAYERS];
+    player_Score[MAX_PLAYERS];
 
 hook Account_Load(playerid, const string: name[], const string: value[])
 {
-    INI_Int("Money", player_Money[playerid]);
+    INI_Int("Score", player_Score[playerid]);
 
     return 1;
 }
@@ -152,13 +152,13 @@ public DriftSummary(playerid)
 {
     PlayerDriftPoints[playerid] = 0;
 
-    GivePlayerMoney(playerid,DriftPointsNow[playerid]);
+    SetPlayerScore(playerid, GetPlayerScore(playerid) + DriftPointsNow[playerid]);
     DriftPointsNow[playerid] = 0;
     TextDrawSetString(DriftTD," ");
 
 	new INI:File = INI_Open(Account_Path(playerid));
 	INI_SetTag( File, "data" );
-    INI_WriteInt(File, "Money", GetPlayerMoney(playerid));
+    INI_WriteInt(File, "Score", GetPlayerScore(playerid));
 
 	INI_Close( File );
 
@@ -208,7 +208,9 @@ public DriftCount()
 
 floatval(Float:val)
 {
-    new str[256];format(str, 256, "%.0f", val);return todec(str);
+    new str[256];
+    format(str, 256, "%.0f", val);
+    return todec(str);
 }
 
 todec(const str[])

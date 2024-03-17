@@ -1,4 +1,4 @@
-### Version 0.0.6 - [17.03.2024]
+### Version 0.0.8 - [18.03.2024]
 
 - Register and Login System
     - The system manages player registration, login, and account data storage using bcrypt for password hashing.
