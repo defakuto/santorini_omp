@@ -56,7 +56,7 @@ main()
 {
     print("-                                     -");
 	print(" Founder : defakuto");
-	print(" Version : 0.0.3");
+	print(" Version : 0.0.4");
 	print("-                                     -");
 	print("> Gamemode Starting...");
 	print(">> Santorini Gamemode Started");
@@ -73,12 +73,12 @@ main()
 #include "external/initial/time.pwn"
 
 //#include "external/scripts/teams.pwn"
-#include "external/scripts/wanted.pwn"
-#include "external/scripts/racewar.pwn"
-#include "external/scripts/parrot.pwn"
+//#include "external/scripts/wanted.pwn"
+//#include "external/scripts/racewar.pwn"
+//#include "external/scripts/parrot.pwn"
 
 
-#include "external/maps/bayside.pwn"
+//#include "external/maps/bayside.pwn"
 
 YCMD:weapon(playerid, const string: params[], help)
 {
