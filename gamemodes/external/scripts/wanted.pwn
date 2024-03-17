@@ -64,7 +64,6 @@ hook OnPlayerTakeDamage(playerid, issuerid, Float:amount, WEAPON:weaponid, bodyp
             SetPlayerWantedLevel(issuerid, player_Wanted[issuerid]);
 
             new INI:File = INI_Open(Account_Path(issuerid));
-            INI_SetTag(File,"data");
             INI_WriteInt(File, "Wanted", player_Wanted[issuerid]);
             INI_Close(File);
 
@@ -95,21 +94,6 @@ YCMD:bribe(playerid, const string: params[], help)
 	}
 
     new INI:File = INI_Open(Account_Path(playerid));
-	INI_SetTag(File,"data");
-    INI_WriteInt(File, "Wanted", player_Wanted[playerid]);
-    INI_Close(File);
-
-	return 1;
-}
-
-YCMD:clearwl(playerid, const string: params[], help)
-{
-	SetPlayerWantedLevel(playerid, 0);
-
-	player_Wanted[playerid] = 0;
-
-    new INI:File = INI_Open(Account_Path(playerid));
-	INI_SetTag(File,"data");
     INI_WriteInt(File, "Wanted", player_Wanted[playerid]);
     INI_Close(File);
 

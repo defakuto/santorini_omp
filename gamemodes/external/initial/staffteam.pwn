@@ -23,7 +23,6 @@ hook OnPlayerConnect(playerid)
 hook OnPlayerDisconnect(playerid, reason)
 {
 	new INI:File = INI_Open(Account_Path(playerid));
-    INI_SetTag(File,"data");
 	INI_WriteInt(File, "Staff", player_Staff[playerid]);
     INI_Close(File);
 
@@ -218,7 +217,8 @@ YCMD:fv(playerid, params[], help)
 
 	new vehicleid = GetPlayerVehicleID(playerid);
 
-	if (!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You are not in vehicle!");
+	if (!IsPlayerInAnyVehicle(playerid)) 
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You are not in vehicle!");
 
 	RepairVehicle(vehicleid);
 
@@ -429,7 +429,6 @@ YCMD:restart(playerid, const string: params[], help)
 	GetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
 
 	new INI:File = INI_Open(Account_Path(playerid));
-    INI_SetTag(File,"data");
 	INI_WriteFloat(File, "positionX", player_PosX[playerid]);
     INI_WriteFloat(File, "positionY", player_PosY[playerid]);
     INI_WriteFloat(File, "positionZ", player_PosZ[playerid]);

@@ -331,7 +331,7 @@ native
  * <seealso name="NetStats_PacketLossPercent" />
  * <seealso name="NetStats_ConnectionStatus" />
  * <seealso name="NetStats_GetIpPort" />
- * <remarks>The return value is not reset to zero after changing the game mode (using the RCON command
+ * <remarks>The return value is not reset to zero after changing the gamemode (using the RCON command
  * "gmx").</remarks>
  * <returns>This function returns the amount of time (in milliseconds) that a player has been connected
  * to the server for. <b><c>0</c></b> is returned if the player is not connected.</returns>

@@ -65,7 +65,6 @@ hook OnPlayerDisconnect(playerid, reason)
 	GetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
 
 	new INI:File = INI_Open(Account_Path(playerid));
-    INI_SetTag(File,"data");
     INI_WriteInt(File, "Level",GetPlayerScore(playerid));
     INI_WriteInt(File, "Skin",GetPlayerSkin(playerid));
     INI_WriteInt(File, "Money", GetPlayerMoney(playerid));
@@ -130,7 +129,6 @@ Dialog: dialog_regpassword(playerid, response, listitem, string: inputtext[])
 	bcrypt_hash(playerid, "OnPlayerPasswordHash", inputtext, BCRYPT_COST);
 
 	new INI:File = INI_Open(Account_Path(playerid));
-	INI_SetTag(File,"data");
 	INI_WriteInt(File, "Level", 0);
 	INI_WriteInt(File, "Skin", 240);
 	INI_WriteInt(File, "Money", 1000);
@@ -196,11 +194,4 @@ public OnPlayerVerifyHash(playerid, bool: success)
         );
     }
     return 1;
-}
-
-YCMD:kill(playerid, const string: params[], help)
-{
-	SetPlayerHealth(playerid, 0);
-
-	return 1;
 }
