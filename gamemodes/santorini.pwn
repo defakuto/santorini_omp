@@ -21,12 +21,10 @@ main()
 #include "external/initial/driftmeter.pwn"
 #include "external/initial/time.pwn"
 
-#include "external/scripts/teams.pwn"
 #include "external/scripts/wanted.pwn"
 #include "external/scripts/racewar.pwn"
 #include "external/scripts/parrot.pwn"
 #include "external/scripts/emergency.pwn"
-//#include "external/scripts/expbullets.pwn"
 
 
 #include "external/maps/bayside.pwn"

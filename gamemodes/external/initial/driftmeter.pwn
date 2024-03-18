@@ -159,7 +159,6 @@ public DriftSummary(playerid)
 	new INI:File = INI_Open(Account_Path(playerid));
 	INI_SetTag( File, "data" );
     INI_WriteInt(File, "Score", GetPlayerScore(playerid));
-
 	INI_Close( File );
 
 }

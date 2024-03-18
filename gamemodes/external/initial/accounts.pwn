@@ -26,7 +26,7 @@ new
 hook Account_Load(playerid, const string: name[], const string: value[])
 {
     INI_String("Password", player_Password[playerid]);
-	INI_Int("Level", player_Score[playerid]);
+	INI_Int("Score", player_Score[playerid]);
 	INI_Int("Skin", player_Skin[playerid]);
 	INI_Int("Money", player_Money[playerid]);
 	INI_Float("positionX", player_PosX[playerid]);
@@ -68,7 +68,7 @@ hook OnPlayerDisconnect(playerid, reason)
 
 	new INI:File = INI_Open(Account_Path(playerid));
 	INI_SetTag( File, "data" );
-    INI_WriteInt(File, "Level",GetPlayerScore(playerid));
+    INI_WriteInt(File, "Score",GetPlayerScore(playerid));
     INI_WriteInt(File, "Skin",GetPlayerSkin(playerid));
     INI_WriteInt(File, "Money", GetPlayerMoney(playerid));
 	INI_WriteFloat(File, "positionX", player_PosX[playerid]);
