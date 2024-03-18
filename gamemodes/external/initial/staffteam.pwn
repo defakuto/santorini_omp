@@ -57,7 +57,7 @@ YCMD:help(playerid, params[], help)
 YCMD:staffcmd(playerid, const string: params[], help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command show you all staff commands.");
+        return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command show you all staff commands.");
 
 	if (!player_Staff[playerid])
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
@@ -88,7 +88,7 @@ YCMD:staffcmd(playerid, const string: params[], help)
 YCMD:sc(playerid, const string: params[], help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This is command for Staff Chat.");
+        return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This is command for Staff Chat.");
 
 
 	if (player_Staff[playerid] < 1)
@@ -107,7 +107,7 @@ YCMD:sc(playerid, const string: params[], help)
 YCMD:sveh(playerid, params[], help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command create your staff vehicle.");
+        return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command create your staff vehicle.");
 
 
 	if (player_Staff[playerid] < 1)
@@ -158,7 +158,7 @@ YCMD:sveh(playerid, params[], help)
 YCMD:goto(playerid, params[],help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command allow you teleport to player.");
+        return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command allow you teleport to player.");
 
 
 	if (player_Staff[playerid] < 1)
@@ -191,7 +191,7 @@ YCMD:goto(playerid, params[],help)
 YCMD:cc(playerid, params[], help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command will clear chat to all.");
+        return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command will clear chat to all.");
 
 
 	if (player_Staff[playerid] < 1)
@@ -202,7 +202,7 @@ YCMD:cc(playerid, params[], help)
 		SendClientMessageToAll(-1, "");
 	}
 
-	SendClientMessageToAll(playerid, ""color_server"Santorini // "color_white"chat is cleared by"color_server" %s", ReturnPlayerName(playerid));
+	SendClientMessageToAll(-1, ""color_server"Santorini // "color_white"chat is cleared by"color_server" %s", ReturnPlayerName(playerid));
 
     return 1;
 }
@@ -210,7 +210,7 @@ YCMD:cc(playerid, params[], help)
 YCMD:fv(playerid, params[], help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command fix your vehicle.");
+        return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command fix your vehicle.");
 
 
 	if (player_Staff[playerid] < 1)
@@ -231,7 +231,7 @@ YCMD:fv(playerid, params[], help)
 YCMD:gethere(playerid, const params[], help)
 {
 	if (help)
-		return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command teleport player to you.");
+		return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command teleport player to you.");
 
 	if (player_Staff[playerid] < 1)
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
@@ -269,7 +269,7 @@ YCMD:gethere(playerid, const params[], help)
 YCMD:nitro(playerid, params[], help)
 {
 	if (help)
-		return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command give you a nitro.");
+		return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command give you a nitro.");
 
 	if (player_Staff[playerid] < 1)
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
@@ -284,7 +284,7 @@ YCMD:nitro(playerid, params[], help)
 YCMD:jetpack(playerid, params[], help)
 {
 	if (help)
-		return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command give you jetpack.");
+		return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command give you jetpack.");
 
 
 	if (player_Staff[playerid] < 1)
@@ -300,7 +300,7 @@ YCMD:jetpack(playerid, params[], help)
 YCMD:setskin(playerid, const string: params[], help)
 {
 	if (help)
-		return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command allow you to put skin from 1 to 311.");
+		return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command allow you to put skin from 1 to 311.");
 
 	if (player_Staff[playerid] < 1)
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");
@@ -333,7 +333,7 @@ YCMD:setskin(playerid, const string: params[], help)
 YCMD:xgoto(playerid, params[], help)
 {
 	if (help)
-		return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"This command teleport you to coordinate.");
+		return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"This command teleport you to coordinate.");
 
 
 	if (player_Staff[playerid] < 1)
@@ -360,7 +360,7 @@ YCMD:xgoto(playerid, params[], help)
 YCMD:setstaff(playerid, const string: params[], help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_server"0 - Revoke Staff | 1. Assistent | 2. Admin | 3. Manager | 4. High Command.");
+        return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"0 - Revoke Staff | 1. Assistent | 2. Admin | 3. Manager | 4. High Command.");
 
 	if (!IsPlayerAdmin(playerid))
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You Must Be RCON!");
@@ -405,7 +405,7 @@ YCMD:setstaff(playerid, const string: params[], help)
 YCMD:kick(playerid, params[],help)
 {
 	if (help)
-        return SendClientMessage(playerid, -1, ""color_yellow"HELP >> "color_white"The command allow you to kick player from server.");
+        return SendClientMessage(playerid, -1, ""color_server"HELP >> "color_white"The command allow you to kick player from server.");
 
 	if (player_Staff[playerid] < 1)
 		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_red"Only Staff Team!");

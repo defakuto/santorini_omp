@@ -21,7 +21,7 @@ main()
 #include "external/initial/driftmeter.pwn"
 #include "external/initial/time.pwn"
 
-//#include "external/scripts/teams.pwn"
+#include "external/scripts/teams.pwn"
 #include "external/scripts/wanted.pwn"
 #include "external/scripts/racewar.pwn"
 #include "external/scripts/parrot.pwn"
@@ -66,6 +66,13 @@ YCMD:kill(playerid, const string: params[], help)
 	return 1;
 }
 
+YCMD:skills(playerid, const string: params[], help)
+{
+
+	return 1;
+}
+
+
 YCMD:setvw(playerid, const string: params[], help)
 {
 	new desiredVW;
@@ -75,3 +82,30 @@ YCMD:setvw(playerid, const string: params[], help)
 	return 1;
 }
 
+YCMD:g06(playerid, const string: params[], help)
+{
+	SetGravity(0.006);
+    SendClientMessage(playerid, -1, "Gravity set to 0.006.");
+	return 1;
+}
+
+YCMD:g08(playerid, const string: params[], help)
+{
+	SetGravity(0.008);
+    SendClientMessage(playerid, -1, "Gravity set to 0.008.");
+	return 1;
+}
+
+YCMD:g10(playerid, const string: params[], help)
+{
+	SetGravity(0.010);
+    SendClientMessage(playerid, -1, "Gravity set to 0.010.");
+	return 1;
+}
+
+YCMD:g12(playerid, const string: params[], help)
+{
+	SetGravity(0.012);
+    SendClientMessage(playerid, -1, "Gravity set to 0.012.");
+	return 1;
+}
