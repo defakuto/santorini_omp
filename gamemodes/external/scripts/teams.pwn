@@ -4,6 +4,8 @@ static
     player_Leader[MAX_PLAYERS],
     player_Team[MAX_PLAYERS];
 
+new IsPlayerInvited[MAX_PLAYERS];
+
 hook Account_Load(playerid, const string: name[], const string: value[])
 {
     INI_Int("Leader", player_Leader[playerid]);
@@ -145,22 +147,29 @@ YCMD:invitetoteam(playerid, params[], help)
         player_Team[targetid] = 1;
     }
 
+    IsPlayerInvited[playerid] = 1;
+
     return 1;
 }
 
 YCMD:jointeam(playerid, params[], help) 
 {
-    if (IsPlayerInRangeOfPoint(playerid, 10, -1390.0066, 2638.8303, 54.9844))
+    if (IsPlayerInvited[playerid] == 1)
     {
-        SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You are now part of Sheriff Team.");
-        player_Team[playerid] = 0;
+        if (IsPlayerInRangeOfPoint(playerid, 10, -1390.0066, 2638.8303, 54.9844))
+        {
+            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You are now part of Sheriff Team.");
+            player_Team[playerid] = 0;
 
+        }
+        else if (IsPlayerInRangeOfPoint(playerid, 10, -910.9723, 2685.9023, 42.3703))
+        {
+            SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You are now part of LaFamilia Team.");
+            player_Team[playerid] = 1;
+        }
     }
-    else if (IsPlayerInRangeOfPoint(playerid, 10, -910.9723, 2685.9023, 42.3703))
-    {
-        SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You are now part of LaFamilia Team.");
-        player_Team[playerid] = 1;
-    }
+
+    IsPlayerInvited[playerid] = 0;
 
     new INI:File = INI_Open(Account_Path(playerid));
 	INI_SetTag( File, "data" );
