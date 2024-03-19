@@ -11,10 +11,3 @@ hook OnPlayerConnect(playerid)
 	return 1;
 }
 
-hook OnPlayerSpawn(playerid)
-{
-	SetPlayerTeam(playerid, NO_TEAM);
-
-	return 1;
-}
-
