@@ -4,7 +4,7 @@ main()
 {
     print("-                                     -");
 	print(" Founder : defakuto");
-	print(" Version : 0.1.0);
+	print(" Version : 0.1.0 ");
 	print("-                                     -");
 	print("> Gamemode Starting...");
 	print(">> Santorini Gamemode Started");
