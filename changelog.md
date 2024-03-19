@@ -17,6 +17,3 @@
 
 - Driftmeter System
     - The system tracks and rewards players for successful drifts performed in vehicles.
-
-- Wanted System
-    - This script implements a wanted system in the game. Players can accumulate a wanted level by committing crimes within certain areas monitored by cameras.
