@@ -28,6 +28,7 @@ public HourBenefit(playerid)
     GivePlayerMoney(playerid, 500);
 
 	new INI:File = INI_Open(Account_Path(playerid));
+    INI_SetTag( File, "data" );
     INI_WriteInt(File, "Score", player_Score[playerid]);
     INI_WriteInt(File, "Money", GetPlayerMoney(playerid));
     INI_Close(File);
