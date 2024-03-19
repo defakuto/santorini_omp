@@ -1,18 +1,20 @@
 #include <ysilib\YSI_Coding\y_hooks>
 
 static  
-	player_Wanted[MAX_PLAYERS],
+	player_Wanted[MAX_PLAYERS];
+	
+new 
 	PlayerInRange[MAX_PLAYERS];
 
 new Float:camera_Locations[][7] = {
 
-    {-1516.1118,2534.7170,55.6875}, //medical camera
-    {-1407.9493,2638.5881,55.6875}, //sheriff camera
-	{-2263.8115,2324.1563,4.8125}, //bayside heli parking camera
-    {-2516.8274,2361.1323,4.9856}, //main garage camera
-	{-2465.6968,2236.4619,4.7969}, //bayside second parking camera
-    {-1507.3467,1963.1437,48.4171}, //weedhouse camera
-    {-828.1052,1504.5996,19.8530}  //bank camera
+    {-1516.1118,2534.7170,55.6875},
+    {-1407.9493,2638.5881,55.6875},
+	{-2263.8115,2324.1563,4.8125},
+    {-2516.8274,2361.1323,4.9856},
+	{-2465.6968,2236.4619,4.7969},
+    {-1507.3467,1963.1437,48.4171},
+    {-828.1052,1504.5996,19.8530}
 };
 
 new
@@ -40,9 +42,16 @@ hook OnPlayerUpdate(playerid)
  	if (!PlayerInRange[playerid] && IsPlayerInRangeOfPoint(playerid, 1.0, -1370.4532, 2052.9966, 52.5156))
     {
         PlayerInRange[playerid] = 1;
-        
-        ApplyActorAnimation(actor_Bribe, "ped", "IDLE_chat", 4.1, false, false, false, false, 0);
-        SendClientMessage(playerid, -1, "Shh. - if you want to get your wanted record free, get me $5000. "color_yellow"/bribe");
+
+		if (player_Wanted[playerid] == 0)
+		{
+			SendClientMessage(playerid, -1, "You are in wrong place, pal.");
+		}
+		else
+		{
+        	ApplyActorAnimation(actor_Bribe, "ped", "IDLE_chat", 4.1, false, false, false, false, 0);
+        	SendClientMessage(playerid, -1, "Shh. - if you want to get your wanted record free, get me $5000. "color_yellow"/bribe");
+		}
     }
 
 	return 1;
