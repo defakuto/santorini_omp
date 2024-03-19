@@ -65,7 +65,7 @@
     },
     "max_bots": 0,
     "max_players": 50,
-    "name": "Santorini Freestyle v0.0.6",
+    "name": "Santorini Freestyle v0.1.0",
     "network": {
         "acks_limit": 3000,
         "aiming_sync_rate": 30,

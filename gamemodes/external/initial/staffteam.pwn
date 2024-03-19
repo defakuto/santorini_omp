@@ -427,6 +427,9 @@ YCMD:kick(playerid, params[],help)
 
 YCMD:restart(playerid, const string: params[], help)
 {
+	if (!IsPlayerAdmin(playerid))
+		return SendClientMessage(playerid, -1, ""color_server"Santorini // "color_white"You Must Be RCON!");
+
 	GetPlayerPos(playerid, player_PosX[playerid], player_PosY[playerid], player_PosZ[playerid]);
 
 	new INI:File = INI_Open(Account_Path(playerid));
