@@ -31,3 +31,4 @@ main()
 #include "external/indev/racewar.pwn"
 #include "external/indev/teams.pwn"
 #include "external/indev/time.pwn"
+#include "external/indev/elevator.pwn"
